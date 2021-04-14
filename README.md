@@ -2,7 +2,7 @@
 
 ## Project setup
 ```
-yarn install
+yarn install zz
 ```
 
 ### Compiles and hot-reloads for development
