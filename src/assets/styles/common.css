@@ -1,0 +1,9 @@
+@charset "utf-8";
+
+.hide { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; } 
+
+.cont { display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 136px); background-color: antiquewhite; } 
+
+.inner { max-width: 450px; margin: auto; } 
+
+.ellip3 { overflow: hidden; text-overflow: ellipsis; word-wrap: break-word; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; line-height: 1.5; height: 80px; } 

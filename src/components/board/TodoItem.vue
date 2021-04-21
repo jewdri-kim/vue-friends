@@ -1,5 +1,67 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+	<div>
+		<div
+			class="list"
+			:class="{ checked: todoItem.isChecked }"
+		>
+			<button @click="$emit('check', todoItem)" class="btn-chk">DO</button>
+			<p class="label">{{ todoItem.label }}</p>
+			<div>
+				<button @click="$emit('delete', todoItem)">X</button>
+				<p>{{ new Date() | moment("D. ddd") }}</p>
+			</div>
+		</div>
+	</div>
 </template>
+
+<script>
+export default {
+	name: "TodoItem",
+	props: {
+		todoItem: {
+			type: Object,
+		},
+		isChecked: {
+			type: Boolean,
+			default: false,
+		},
+	},
+};
+</script>
+
+<style lang="scss" scoped>
+.list {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background: #fff;
+	padding: 10px;
+
+	& + .list {
+		border-top: 1px solid #ddd;
+	}
+
+	> p {
+		word-break: break-all;
+		max-width: 55%;
+	}
+
+	> div p {
+		color: #ccc;
+		font-size: 12px;
+		font-weight: 300;
+		padding-top: 10px;
+	}
+}
+
+.checked {
+	.label {
+		text-decoration: line-through;
+		color: #ddd;
+	}
+
+	.btn-chk {
+		color: #ddd;
+	}
+}
+</style>
