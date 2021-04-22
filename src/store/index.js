@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  strict: process.env.NODE_ENV !== 'production',      // ture : 성능이슈, 
+  strict: process.env.NODE_ENV !== 'production',      // ture : 성능이슈,
   state: {
     todoList: [
         {
@@ -30,9 +30,9 @@ export default new Vuex.Store({
           state.todoList.splice(index,1);
         }
       })
-      
+
       localStorage.removeItem(todoItem);
-      
+
     },
     clearToToList(state){
       localStorage.clear();
@@ -40,15 +40,15 @@ export default new Vuex.Store({
     },
     completedToDo(state, todoItem){
       state.todoList.forEach(item => {
-        if( item.id === todoItem.id){
+        if (item.id === todoItem.id){
           item.isEnd = !item.isEnd;
         }
       })
     },
     initTodoList(state) {
-        if(localStorage.getItem('todoList')) {
-            this.replaceState(
-                Object.assign(state, JSON.parse(localStorage.getItem('todoList')))
+        if (localStorage.getItem('todoList')) {
+            state.todoList = JSON.parse(
+                localStorage.getItem('todoList')
             );
         }else{
             // json 파일로 가져오기?
@@ -61,11 +61,11 @@ export default new Vuex.Store({
     },
     deleteToDoItem({commit}, todoItem){
         commit('deleteToDoItem', todoItem);
-    },    
+    },
     addToDoItem({commit}, todoItem){
         if(todoItem.title === '' || todoItem.title === null){
             alert('할일을 입력해주세요');
-        }else{            
+        }else{
             todoItem.id = this.state.todoList[this.state.todoList.length - 1].id + 1;
             commit('addToDoItem', todoItem);
         }
@@ -84,6 +84,6 @@ export default new Vuex.Store({
     time(){}
   },
   methods: {
-    
+
   }
 })

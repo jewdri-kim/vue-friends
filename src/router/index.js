@@ -1,13 +1,23 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Todo from '@/views/Todo.vue'
+import store from '@/store/';
 
 Vue.use(VueRouter)
 
 const routes = [{
 		path: '/',
 		name: 'Todo',
-		component: Todo
+		component: Todo,
+		beforeEnter: (to, from, next) => {
+			try {
+				store.dispatch('initTodoList');
+			} catch(e) {
+				console.error('initialize failed.', e.message);
+			} finally {
+				next();
+			}
+		}
 	}
 ]
 
