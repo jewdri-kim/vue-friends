@@ -63,9 +63,12 @@ export default new Vuex.Store({
         commit('deleteToDoItem', todoItem);
     },    
     addToDoItem({commit}, todoItem){
-        console.log(todoItem);
-        todoItem.id = this.state.todoList[this.state.todoList.length - 1].id + 1;
-        commit('addToDoItem', todoItem);
+        if(todoItem.title === '' || todoItem.title === null){
+            alert('할일을 입력해주세요');
+        }else{            
+            todoItem.id = this.state.todoList[this.state.todoList.length - 1].id + 1;
+            commit('addToDoItem', todoItem);
+        }
      },
     initTodoList({commit}){
         commit('initTodoList');

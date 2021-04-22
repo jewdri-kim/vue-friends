@@ -29,7 +29,7 @@
                   type="text"
                   id="todo"
                   placeholder="오늘 할 일!"
-                  @keyup.enter="addNewTodo"
+                  @add="addNewTodo"
               />
             </div>
             <button type="button" @click="addNewTodo">입력</button>
