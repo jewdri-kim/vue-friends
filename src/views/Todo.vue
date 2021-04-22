@@ -11,6 +11,7 @@
 				style="margin-top:15px"
 				:listData="todoList"
 				:isChecked="isChecked"
+                :noDataString="noDataString"
 				@check="checkTodo"
 				@delete="deleteTodo"
 			></board-list>
@@ -43,7 +44,8 @@ export default {
                 title:null,
                 date: new Date(),
                 isEnd : false
-            }
+            },
+            noDataString: '할일 목록이 없습니다.'
 		};
 	},
 

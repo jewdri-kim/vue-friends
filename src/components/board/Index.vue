@@ -1,15 +1,19 @@
 <template>
 	<div>
+        <div v-if="listData.length > 0">
+            <todo-item 
+                v-for="(todo, i) in listData" :key="i"
+                :isChecked="isChecked"
+                :todoItem ="todo"
+                
+                @check="checkTodo"
+                @delete="toggleTodo"
 
-		<todo-item
-			v-for="(todo, i) in listData" :key="i"
-			:isChecked="isChecked"
-			:todoItem ="todo"
-			
-			@check="checkTodo"
-			@delete="toggleTodo"
-            
-		></todo-item>
+            ></todo-item>
+        </div>
+        <div v-else class="no-data">
+           {{ noDataString }}
+        </div>
 
 
 	</div>
@@ -30,6 +34,9 @@ export default {
 			type: Boolean,
 			default: false,
 		},
+        noDataString: {
+            default: '게시글이 없습니다.'
+        }
 	},
 	methods: {
 		checkTodo(todo){

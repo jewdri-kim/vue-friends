@@ -2,8 +2,7 @@
 	<div>
 		<div
 			class="list"
-			:class="{ checked: todoItem.isEnd }"
-		>
+			:class="{ checked: todoItem.isEnd }">
 			<button @click="$emit('check', todoItem)" class="btn-chk">DO</button>
 			<p class="label">{{ todoItem.title }}</p>
 			<div>
