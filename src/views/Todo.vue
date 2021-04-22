@@ -2,17 +2,17 @@
 	<section class="todo-wrap">
     <Header />
 		<div class="todo-body">
+            <!--
+			<input type="text" v-model="todoInput" @keyup.enter="addNewTodo" />-->
 
-			<input type="text" v-model="todoInput" @keyup.enter="addNewTodo" />
-
-			<button @click="$emit('clear')">DO clear</button>
+			<button @click="clearAll()">Clear All</button>
 
 			<board-list
 				style="margin-top:15px"
-				:todoList="activeTodoList"
+				:listData="todoList"
 				:isChecked="isChecked"
 				@check="checkTodo"
-				@delete="toggleTodo"
+				@delete="deleteTodo"
 			></board-list>
 
 
@@ -24,6 +24,7 @@
 import Header from "@/layout/VueHeader";
 import Footer from "@/layout/VueFooter";
 import BoardList from "@/components/board/Index.vue";
+import { mapState } from "vuex";
 
 export default {
 	name: "Todo",
@@ -38,11 +39,17 @@ export default {
 			isChecked: false,
 			todoInput: "",
 			// todoList: []
+            addTodo:{
+                title:null,
+                date: new Date(),
+                isEnd : false
+            }
 		};
 	},
 
 	// json 객체로 만든다(html안에서 내부 변수처럼 사용)
 	computed: {
+        ...mapState(['todoList']),
 		//삭제 버튼 클릭시 on/off
 		activeTodoList() {
 			// filter()는 배열 내 각 요소에 대해 한 번 제공된 callback 함수를 호출해, callback이 true로 강제하는 값을 반환하는 모든 값이 있는 새로운 배열을 생성합니다.
@@ -52,33 +59,17 @@ export default {
 		},
 	},
 	methods: {
-		//todo 추가
-		addNewTodo() {
-			let item = {
-				label: this.todoInput, //input 값
-				state: "active", //상태
-				isChecked: false, //체크여부
-			}
-
-			this.$store.dispatch('addNewTodo', item)
-			this.todoInput = "" //이벤트 후 리셋
-			// console.log(this.todoList)
-		},
-
 		//삭제 버튼 클릭 시 상태값 변경
-		toggleTodo(todo) {
-			todo.state = todo.state === "active" ? "done" : "active"
+		deleteTodo(todo) {
+			this.$store.dispatch('deleteToDoItem', {...todo});
 		},
-
-		//체크 클릭 시 클래스 추가
+		//체크 클릭 
 		checkTodo(todo) {
-			todo.isChecked = !todo.isChecked
-			//console.log(todo);
+			this.$store.dispatch('completedToDo', {...todo});
 		},
-
-		//do 전부 삭제
-		doClear(){
-			//isChecked 가 true이면 state값을 done으로 바꿔준다.
+		//전부 삭제
+		clearAll(){
+			this.$store.dispatch('clearToToList');
 		}
 	},
 };

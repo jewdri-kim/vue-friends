@@ -2,13 +2,13 @@
 	<div>
 		<div
 			class="list"
-			:class="{ checked: todoItem.isChecked }"
+			:class="{ checked: todoItem.isEnd }"
 		>
 			<button @click="$emit('check', todoItem)" class="btn-chk">DO</button>
-			<p class="label">{{ todoItem.label }}</p>
+			<p class="label">{{ todoItem.title }}</p>
 			<div>
 				<button @click="$emit('delete', todoItem)">X</button>
-				<p>{{ new Date() | moment("D. ddd") }}</p>
+				<p>{{ todoItem.date | moment("D. ddd") }}</p>
 			</div>
 		</div>
 	</div>

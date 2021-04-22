@@ -2,12 +2,13 @@
 	<div>
 
 		<todo-item
-			v-for="(todo, i) in todoList" :key="i"
+			v-for="(todo, i) in listData" :key="i"
 			:isChecked="isChecked"
 			:todoItem ="todo"
 			
 			@check="checkTodo"
 			@delete="toggleTodo"
+            
 		></todo-item>
 
 
@@ -22,7 +23,7 @@ export default {
 		TodoItem
 	},
 	props:{
-		todoList: {
+		listData: {
 			type: Array,
 		},
 		isChecked: {

@@ -25,12 +25,14 @@
           <div class="form">
             <div class="form-group">
               <input-field
-                  v-model="inputTodo"
+                  v-model="addTodo.title"
                   type="text"
                   id="todo"
                   placeholder="오늘 할 일!"
+                  @keyup.enter="addNewTodo"
               />
             </div>
+            <button type="button" @click="addNewTodo">입력</button>
           </div>
         </form>
       </div>
@@ -53,8 +55,12 @@
 				date: "",
 				time: "",
 				timeText: "",
-				timeIcon: "",
-				inputTodo: '',
+				timeIcon: "",				
+                addTodo:{
+                    title:null,
+                    date: new Date(),
+                    isEnd : false
+                },
 				isShow: false,
 
 				todoChkNum:0,
@@ -108,15 +114,14 @@
 			todoShow: function () {
 				this.isShow = !this.isShow;
 			},
-			addTodo: function(){
-				this.todoList.push({
-					id:this.todoList.length+1,
-					content: this.inputTodo,
-					done: false
-				});
+			//todo 추가
+            addNewTodo() {            
+                let item = this.addTodo;
 
-				this.inputTodo = '';
-			},
+                this.$store.dispatch('addToDoItem', {...item});
+                this.addTodo.title = '';
+                // console.log(this.todoList)
+            },
 			removeTodo: function() {
 				//하나씩 삭제
 			},
