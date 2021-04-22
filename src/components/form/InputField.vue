@@ -6,7 +6,7 @@
 				:id="id"
 				:placeholder="placeholder"
 				@input="change"
-				@keyup.enter="addNew"
+				@keypress.enter.prevent="addNew"
         >
 	</div>
 </template>
