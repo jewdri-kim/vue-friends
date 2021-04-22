@@ -2,10 +2,14 @@
 	<section class="todo-wrap">
     <Header />
 		<div class="todo-body">
-            <!--
-			<input type="text" v-model="todoInput" @keyup.enter="addNewTodo" />-->
 
 			<button @click="clearAll()">Clear All</button>
+
+			<select-field
+				:options="options"
+				v-model="selected"
+				@input="listChange"
+			></select-field>
 
 			<board-list
 				style="margin-top:15px"
@@ -16,7 +20,6 @@
 				@delete="deleteTodo"
 			></board-list>
 
-
 		</div>
     <Footer />
 	</section>
@@ -25,40 +28,47 @@
 import Header from "@/layout/VueHeader";
 import Footer from "@/layout/VueFooter";
 import BoardList from "@/components/board/Index.vue";
+import SelectField from '@/components/form/SelectField.vue';
 import { mapState } from "vuex";
 
 export default {
 	name: "Todo",
 	components: {
-		// TodoItem,
 		Header,
 		Footer,
 		BoardList,
+		SelectField,
 	},
 	data() {
 		return {
 			isChecked: false,
 			todoInput: "",
-			// todoList: []
             addTodo:{
                 title:null,
                 date: new Date(),
                 isEnd : false
             },
-            noDataString: '할일 목록이 없습니다.'
+            noDataString: '할일 목록이 없습니다.',
+			selected: "",
+			options: [
+				{
+					text: "정렬",
+					value: "",
+				},
+				{
+					text: "latest",
+					value: "A",
+				},
+				{
+					text: "oldest",
+					value: "B",
+				}
+			],
 		};
 	},
 
-	// json 객체로 만든다(html안에서 내부 변수처럼 사용)
 	computed: {
         ...mapState(['todoList']),
-		//삭제 버튼 클릭시 on/off
-		activeTodoList() {
-			// filter()는 배열 내 각 요소에 대해 한 번 제공된 callback 함수를 호출해, callback이 true로 강제하는 값을 반환하는 모든 값이 있는 새로운 배열을 생성합니다.
-
-			//return this.todoList.filter((todo) => todo.state === "active")
-			return this.$store.getters.addTodoList
-		},
 	},
 	methods: {
 		//삭제 버튼 클릭 시 상태값 변경
@@ -72,6 +82,14 @@ export default {
 		//전부 삭제
 		clearAll(){
 			this.$store.dispatch('clearToToList');
+		},
+		//정렬
+		listChange(){
+			if( this.selected === 'A'){
+				this.$store.dispatch('sortTodoList');
+			} else {
+				this.$store.dispatch('reverseTodoList');
+			}
 		}
 	},
 };
