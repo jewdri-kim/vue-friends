@@ -14,7 +14,7 @@ export default new Vuex.Store({
             id: 1
         }
     ],
-    toDayDate : null,
+    toDayDate : new Date(),
     time : null,
     todoChkNum : null
   },
@@ -50,8 +50,6 @@ export default new Vuex.Store({
             state.todoList = JSON.parse(
                 localStorage.getItem('todoList')
             );
-        }else{
-            // json 파일로 가져오기?
         }
 	}
   },
@@ -80,7 +78,7 @@ export default new Vuex.Store({
   modules: {
   },
   getters:{
-    toDayDate (){},
+    toDayDate: (state) => state.toDayDate.getFullYear(),
     time(){}
   },
   methods: {
