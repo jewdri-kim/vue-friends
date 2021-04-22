@@ -1,5 +1,6 @@
 <template>
     <div class="todo-header">
+        <h1> 테스트날짜 : {{ toDayDate }} 테스트시간 : {{ nowTime }}</h1> <!--//date:요거= -->
       <div class="time-box">
         {{ time }} {{ timeText }}
       </div>
@@ -64,6 +65,8 @@
 				isShow: false,
 
 				todoChkNum:0,
+                toDayDate: this.$store.getters.toDayDate,    //date:요거 ,
+                nowTime: this.$store.getters.time    //date:요거
 			}
 		},
 		methods: {

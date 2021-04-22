@@ -15,7 +15,7 @@ export default new Vuex.Store({
         }
     ],
     toDayDate : new Date(),
-    time : null,
+    time :  new Date(),
     todoChkNum : null
   },
   mutations: {
@@ -29,9 +29,12 @@ export default new Vuex.Store({
         if( item.id === todoItem.id){
           state.todoList.splice(index,1);
         }
+        //localStorage.removeItem(todoItem);
+        let tmpData = JSON.stringify(state.todoList);
+        localStorage.setItem('todoList', tmpData);
       })
 
-      localStorage.removeItem(todoItem);
+      
 
     },
     clearToToList(state){
@@ -65,6 +68,13 @@ export default new Vuex.Store({
             alert('할일을 입력해주세요');
         }else{
             todoItem.id = this.state.todoList[this.state.todoList.length - 1].id + 1;
+            let today = new Date(); 
+            todoItem.date = today.getFullYear()+'-'
+                            +(today.getMonth()+1)+'-'
+                            +today.getDate()+' '
+                            +today.getHours()+':'
+                            +today.getMinutes()+':'
+                            +today.getSeconds();
             commit('addToDoItem', todoItem);
         }
      },
@@ -78,8 +88,23 @@ export default new Vuex.Store({
   modules: {
   },
   getters:{
-    toDayDate: (state) => state.toDayDate.getFullYear(),
-    time(){}
+    toDayDate (state){
+        let today = state.toDayDate;
+        today = today.getFullYear()+'-'
+                +(today.getMonth()+1)+'-'
+                +today.getDate(); 
+
+        return today;
+
+    },
+    time(state){        
+        let time = state.time;
+        time = time.getHours()+':'
+                +time.getMinutes()+':'
+                +time.getSeconds();
+
+        return time;
+    }
   },
   methods: {
 
