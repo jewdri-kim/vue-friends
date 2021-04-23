@@ -1,6 +1,6 @@
 <template>
 	<div>
-        <div v-if="listData.length > 0">
+        <ul v-if="listData.length > 0" class="list-wrap">
             <todo-item 
                 v-for="(todo, i) in listData" :key="i"
                 :isChecked="isChecked"
@@ -10,7 +10,7 @@
                 @delete="toggleTodo"
 
             ></todo-item>
-        </div>
+        </ul>
         <div v-else class="no-data">
            {{ noDataString }}
         </div>
@@ -50,5 +50,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+	.no-data{
+		margin:30px;
+		min-height:300px;
+		padding:15px;
+		background:#fff;
+		border-radius: 12px;
+		text-align:center;
+		line-height:300px;
+	}
 </style>

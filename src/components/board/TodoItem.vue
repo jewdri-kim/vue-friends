@@ -1,6 +1,5 @@
 <template>
-	<div>
-		<div
+		<li
 			class="list"
 			:class="{ checked: todoItem.isEnd }">
 			<button @click="$emit('check', todoItem)" class="btn-chk">DO</button>
@@ -9,8 +8,7 @@
 				<button @click="$emit('delete', todoItem)">X</button>
 				<p>{{ todoItem.date | moment("D. ddd") }}</p>
 			</div>
-		</div>
-	</div>
+		</li>
 </template>
 
 <script>
@@ -35,9 +33,10 @@ export default {
 	justify-content: space-between;
 	background: #fff;
 	padding: 10px;
+	margin:0 15px;
 
 	& + .list {
-		border-top: 1px solid #ddd;
+		margin-top:10px;
 	}
 
 	> p {

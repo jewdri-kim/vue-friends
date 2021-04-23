@@ -1,15 +1,20 @@
 <template>
 	<section class="todo-wrap">
-    <Header />
+		<Header />
 		<div class="todo-body">
 
-			<button @click="clearAll()">Clear All</button>
-
-			<select-field
-				:options="options"
-				v-model="selected"
-				@input="listChange"
-			></select-field>
+			<div class="filter-wrap">
+				<div class="filter">
+					<button @click="clearAll()" class="btn-all">Clear All</button>
+				</div>
+				<div class="filter select-area">
+					<select-field
+						:options="options"
+						v-model="selected"
+						@input="listChange"
+					></select-field>
+				</div>
+			</div>
 
 			<board-list
 				style="margin-top:15px"
@@ -20,8 +25,8 @@
 				@delete="deleteTodo"
 			></board-list>
 
-		</div>
-    <Footer />
+			</div>
+			<Footer />
 	</section>
 </template>
 <script>
@@ -48,7 +53,7 @@ export default {
                 date: new Date(),
                 isEnd : false
             },
-            noDataString: '할일 목록이 없습니다.',
+            noDataString: '목록이 없습니다.',
 			selected: "",
 			options: [
 				{
@@ -108,6 +113,39 @@ export default {
 		width:90%;
 		height:60%;
 		transform:translateX(-50%);
+		.filter-wrap{
+			font-size:0;
+			padding:10px 15px;
+			.filter{
+				display:inline-block;
+				width:50%;
+				.btn-all{
+					font-size:14px;
+				}
+				&.select-area{
+					position:relative;
+					text-align:right;
+					&:after{
+						content: "";
+						z-index: 2;
+						position: absolute;
+						top: 17px;
+						right: 20px;
+						display: inline-block;
+						width: 7px;
+						height: 7px;
+						border-style: solid;
+						border-color: transparent #000 #000 transparent;
+						border-width: 0 1px 1px 0;
+						-webkit-transform: rotate(45deg);
+						-ms-transform: rotate(45deg);
+						transform: rotate(45deg);
+						-webkit-transition: all 0.15s ease-in-out;
+						transition: all 0.15s ease-in-out;
+					}
+				}
+			}
+		}
 		.todo-list{
 			height:100%;
 			overflow-y:scroll;

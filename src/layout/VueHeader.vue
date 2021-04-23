@@ -1,47 +1,47 @@
 <template>
     <div class="todo-header">
-        <h1> 테스트날짜 : {{ toDayDate }} 테스트시간 : {{ nowTime }}</h1> <!--//date:요거= -->
-      <div class="time-box">
-        {{ time }} {{ timeText }}
-      </div>
-      <div class="date-box">
-        <div>
-          <span class="day">{{ day }}</span>
-        </div>
-        <div>
-          <span class="year">{{ year }}</span><br/>
-          <span class="month">{{ month }}</span>
-          <span class="date">{{ date }}</span>
-        </div>
-      </div>
-      <div class="task-box">
-        <!-- 
-			투두 리스트 가져오기 오류
+		<div class="time-box">
+			{{ time }} {{ timeText }}
+		</div>
+		<div class="date-box">
+			<div>
+				<span class="day">{{ day }}</span>
+			</div>
+			<div>
+				<span class="year">{{ year }}</span><br/>
+				<span class="month">{{ month }}</span>
+				<span class="date">{{ date }}</span>
+			</div>
+		</div>
+		<div class="task-box">
 			<strong>{{ todoChkNum }}</strong><span>{{ todoList.length }}</span> 
-		-->
-      </div>
-      <div class="add-box" :class="{ active: isShow }">
-        <button class="add-btn" @click="todoShow">추가</button>
-        <form >
-          <div class="form">
-            <div class="form-group">
-              <input-field
-                  v-model="addTodo.title"
-                  type="text"
-                  id="todo"
-                  placeholder="오늘 할 일!"
-                  @add="addNewTodo"
-              />
-            </div>
-            <button type="button" @click="addNewTodo">입력</button>
-          </div>
-        </form>
-      </div>
+		</div>
+		<div class="add-box" :class="{ active: isShow }">
+			<button class="add-btn" @click="todoShow">추가</button>
+			<form >
+				<div class="form">
+					<div class="form-group">
+						<input-field
+							v-model="addTodo.title"
+							type="text"
+							id="todo"
+							placeholder="오늘 할 일!"
+							@add="addNewTodo"
+						/>
+					</div>
+					<button type="button" @click="addNewTodo">
+						<span class="hide">입력</span>
+						<i class="i-arr"></i>
+					</button>
+				</div>
+			</form>
+		</div>
     </div>
 </template>
 
 <script>
 	import InputField from "@/components/form/InputField";
+import { mapState } from "vuex";
 
 	export default {
 		name: 'Header',
@@ -55,8 +55,7 @@
 				day: "",
 				date: "",
 				time: "",
-				timeText: "",
-				timeIcon: "",				
+				timeText: "",			
                 addTodo:{
                     title:null,
                     date: new Date(),
@@ -65,22 +64,18 @@
 				isShow: false,
 
 				todoChkNum:0,
-                toDayDate: this.$store.getters.toDayDate,    //date:요거 ,
-                nowTime: this.$store.getters.time    //date:요거
 			}
 		},
 		methods: {
 			dateInfo: function() {
-				const today = new Date();
+				const today = this.$store.state.toDayDate;
+				const todayTime = new Date();
+				//console.log("+++" + today)
 
-				// 날짜
-				const year = today.getFullYear();
-				this.year = year;
-				const month = today.getMonth()+1;
-				this.month = month;
-				const date = today.getDate();
-				this.date = date;
-				/* days 가 오류가 왜 나는지 모르겠음 ...
+				//날짜
+				this.year = today.getFullYear();
+				this.month = today.getMonth()+1;
+				this.date = today.getDate();
 				const
 					days = [
 						'일',
@@ -91,12 +86,10 @@
 						'금',
 						'토'
 					]
-				const day = today.getDay();
 				this.day = days[today.getDay()];
-				*/
+
 				// 시간
-				const time = this.timeLeft(''+today.getHours()) + ":" + this.timeLeft(''+today.getMinutes());
-				this.time = time;
+				this.time = this.timeLeft(''+todayTime.getHours()) + ":" + this.timeLeft(''+todayTime.getMinutes());
 
 				// 시간 텍스트
 				const timeBox = today.getHours();
@@ -118,9 +111,8 @@
 				this.isShow = !this.isShow;
 			},
 			//todo 추가
-            addNewTodo() {            
+             addNewTodo() {            
                 let item = this.addTodo;
-
                 this.$store.dispatch('addToDoItem', {...item});
                 this.addTodo.title = '';
                 // console.log(this.todoList)
@@ -132,6 +124,12 @@
 		mounted () {
 			//this.dateInfo();
 			setInterval(this.dateInfo, 100); //실시간 반영
+		},
+		computed: {
+			...mapState(['todoList']),
+			todoListCompleted() {
+				return this.$store.getters.getTodoListCompleted
+			},
 		},
 	}
 </script>
@@ -148,7 +146,9 @@
 				font-weight:700;
 			}
 			.date-box{
-				padding:70px 40px 0;
+				position:absolute;
+				top:12%;
+				left:10%;
 				>div{
 					display:inline-block;
 					vertical-align:middle;
@@ -243,6 +243,42 @@
 							box-shadow:7px 7px 7px rgba(0,0,0,0.06);
 						}
 					}
+					button{
+						position: absolute;
+						top: 50%;
+						right: 15px;
+						transform: translateY(-50%);
+						background: #ffc107;
+						border-radius: 100%;
+						width: 30px;
+						height: 30px;
+						font-size: 0;
+						opacity: 0;
+						z-index: -1;
+							.i-arr{
+								&::before{
+									content:'';
+									position:absolute;top:50%;left:50%;
+									display:inline-block; 
+									width: 15px;height:1px;
+									background:#fff;
+									transform: translate(-50%,-50%);
+									}
+								&::after{
+									content:'';
+									position:absolute;top:50%;left:65%;
+									display:inline-block; 
+									width: 8px; height:8px;
+									border-style: solid;border-color: transparent #fff #fff transparent;border-width: 0 1px 1px 0;
+									-webkit-transform: rotate(-45deg);
+									-ms-transform: rotate(-45deg);
+									transform: translate(-50%,-50%) rotate(-45deg);
+									margin-left:-1px;
+									-webkit-transition: all .3s ease;-moz-transition: all .3s ease;transition: all .3s ease;
+									}
+
+							}
+					}
 				}
 				&.active{
 					.form {
@@ -252,6 +288,12 @@
 							input {
 								padding: 0 20px;
 							}
+						}
+						button{
+							opacity: 1;
+							z-index: 1;
+							transition: all .3s ease;
+							transition-delay: 0.3s;
 						}
 					}
 				}
