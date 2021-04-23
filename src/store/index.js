@@ -44,6 +44,8 @@ export default new Vuex.Store({
 					item.isEnd = !item.isEnd;
 				}
 			})
+			let tmpData = JSON.stringify(state.todoList);
+			localStorage.setItem('todoList', tmpData);
 		},
 		initTodoList(state) {
 			if (localStorage.getItem('todoList')) {
