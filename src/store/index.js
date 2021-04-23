@@ -15,8 +15,7 @@ export default new Vuex.Store({
 			}
 		],
 		toDayDate: new Date(),
-		time: new Date(),
-		todoChkNum: null
+		time: new Date()
 	},
 	mutations: {
 		addToDoItem(state, todoItem) {
@@ -69,7 +68,7 @@ export default new Vuex.Store({
         updateDateTime(state){
             state.toDayDate = new Date();
             state.time = new Date();
-        }
+        },
 	},
 	actions: {
 		completedToDo({commit}, todoItem) { // {commit}
@@ -104,6 +103,9 @@ export default new Vuex.Store({
 		},
         updateDateTime({ commit }){
 			commit('updateDateTime');
+        },
+        updateTodoChkNum({ commit }){
+			commit('updateTodoChkNum');
         }
 	},
 	modules: {},

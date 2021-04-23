@@ -63,7 +63,7 @@ import { mapState } from "vuex";
                 },
 				isShow: false,
 
-				todoChkNum:0,
+				
 			}
 		},
 		methods: {
@@ -130,6 +130,9 @@ import { mapState } from "vuex";
 			todoListCompleted() {
 				return this.$store.getters.getTodoListCompleted
 			},
+            todoChkNum() {
+                return this.$store.state.todoList.filter(item => item.isEnd).length
+            } 
 		},
 	}
 </script>
