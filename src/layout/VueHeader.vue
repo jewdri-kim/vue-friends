@@ -36,17 +36,29 @@
 				</div>
 			</form>
 		</div>
+        <popup :visible="popVisible" @PopUpclose="popVisible = false">
+            <h2 slot="header"> 할 일을 입력해주세요 !!!</h2>
+            <div class="contents">
+                <a href="#" @click.prevent="popVisible = false">확인</a>
+            </div>
+        </popup> 
     </div>
+
+    
+
+
 </template>
 
 <script>
-	import InputField from "@/components/form/InputField";
+import InputField from "@/components/form/InputField.vue";
+import Popup from '@/layout/VuePopUp.vue';
 import { mapState } from "vuex";
 
 	export default {
 		name: 'Header',
 		components:	{
 			InputField,
+            Popup
 		},
 		data() {
 			return {
@@ -62,7 +74,7 @@ import { mapState } from "vuex";
                     isEnd : false
                 },
 				isShow: false,
-
+                popVisible : false
 				
 			}
 		},
@@ -112,9 +124,14 @@ import { mapState } from "vuex";
 			},
 			//todo 추가
              addNewTodo() {            
-                let item = this.addTodo;
-                this.$store.dispatch('addToDoItem', {...item});
-                this.addTodo.title = '';
+                let item = this.addTodo;                
+                if (item.title === '' || item.title === null) {
+                    console.log('빈값');
+                    this.popVisible = true;
+                }else{
+                    this.$store.dispatch('addToDoItem', {...item});
+                    this.addTodo.title = '';
+                }
                 // console.log(this.todoList)
             },
 			removeTodo: function() {

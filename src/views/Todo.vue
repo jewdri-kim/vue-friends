@@ -5,7 +5,7 @@
 
 			<div class="filter-wrap">
 				<div class="filter all-area">
-					<button @click="clearAll()" class="btn-all">
+					<button @click="popOpen()" class="btn-all" v-if="todoList.length > 0">
 						<i class="i-chk"></i>
 						<span>전체 삭제</span>
 					</button>
@@ -17,6 +17,9 @@
 						@input="listChange"
 					></select-field>
 				</div>
+
+                
+                
 			</div>
 
 			<board-list
@@ -27,9 +30,17 @@
 				@check="checkTodo"
 				@delete="deleteTodo"
 			></board-list>
+		</div>
+        
 
-			</div>
-			<Footer />
+        <popup :visible="popVisible" @PopUpclose="popVisible = false">
+            <h2 slot="header"> 전체 할일 목록이 없어집니다. <br>정말로 삭제하시겠어요?</h2>
+            <div class="contents">
+                <a href="#" @click.prevent="clearAll">예</a>
+                <a href="#" @click.prevent="popVisible = false">아니요</a>
+            </div>
+        </popup>
+		<Footer />
 	</section>
 </template>
 <script>
@@ -37,6 +48,7 @@ import Header from "@/layout/VueHeader";
 import Footer from "@/layout/VueFooter";
 import BoardList from "@/components/board/Index.vue";
 import SelectField from '@/components/form/SelectField.vue';
+import Popup from '@/layout/VuePopUp.vue';
 import { mapState } from "vuex";
 
 export default {
@@ -46,6 +58,7 @@ export default {
 		Footer,
 		BoardList,
 		SelectField,
+        Popup
 	},
 	data() {
 		return {
@@ -72,6 +85,7 @@ export default {
 					value: "B",
 				}
 			],
+            popVisible:false
 		};
 	},
 
@@ -87,8 +101,12 @@ export default {
 		checkTodo(todo) {
 			this.$store.dispatch('completedToDo', {...todo});
 		},
+        popOpen(){
+            this.popVisible = true;
+        },
 		//전부 삭제
 		clearAll(){
+            this.popVisible = false;
 			this.$store.dispatch('clearToToList');
 		},
 		//정렬
