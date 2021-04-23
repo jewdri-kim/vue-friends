@@ -114,7 +114,7 @@ export default new Vuex.Store({
 			time = time.getHours() + ':' +
 				time.getMinutes() + ':' +
 				time.getSeconds();
-
+				
 			return time;
 		}
 	},

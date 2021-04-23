@@ -1,6 +1,6 @@
 <template>
 	<select 
-		class="select-area"
+		class="select"
 		:name="name" 
 		:id="id" 
 		:value="value" 
@@ -37,8 +37,16 @@
 	}
 </script>
 <style lang="scss" scoped>
-.select-area {
-	width: 85px;
-	height: 40px;
+//스타일 수정
+.select {
+	width:auto;
+	height:35px;
+	line-height:35px;
+	padding:0 15px 0 5px;
+	color: #222;
+	border:0;
+	border-bottom:1px solid #ddd;
+	background:transparent;
+	font-size:13px;
 }
 </style>
