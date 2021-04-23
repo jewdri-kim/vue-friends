@@ -65,7 +65,11 @@ export default new Vuex.Store({
 			})
 			let tmpData = JSON.stringify(state.todoList);
 			localStorage.setItem('todoList', tmpData);
-		}
+		},
+        updateDateTime(state){
+            state.toDayDate = new Date();
+            state.time = new Date();
+        }
 	},
 	actions: {
 		completedToDo({commit}, todoItem) { // {commit}
@@ -79,6 +83,7 @@ export default new Vuex.Store({
 				alert('할일을 입력해주세요');
 			} else {
 				todoItem.id = this.state.todoList[this.state.todoList.length - 1].id + 1;
+                commit('updateDateTime');
 				let today = this.getters.toDayDate;
 				let time = this.getters.time;
 				todoItem.date = today + ' ' + time;
@@ -96,7 +101,10 @@ export default new Vuex.Store({
 		},
 		reverseTodoList({ commit }) {
 			commit('reverseTodoList');
-		}
+		},
+        updateDateTime({ commit }){
+			commit('updateDateTime');
+        }
 	},
 	modules: {},
 	getters: {
