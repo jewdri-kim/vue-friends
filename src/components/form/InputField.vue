@@ -1,5 +1,33 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+	<div class="form-item">
+		<input
+				:value="value"
+				:type="type"
+				:id="id"
+				:placeholder="placeholder"
+				@input="change"
+				@keypress.enter.prevent="addNew"
+        >
+	</div>
 </template>
+<script>
+	export default {
+		name: 'inputField',
+		props: [
+			'type',
+			'name',
+			'id',
+			'value',
+			'placeholder',
+		],
+		methods: {
+			change: function($event) {
+				this.$emit('input', $event.target.value);
+			},
+			addNew:function($event) {
+                //console.log('enter');
+				this.$emit('add',$event.target.value);
+			}
+		}
+	}
+</script>

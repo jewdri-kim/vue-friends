@@ -4,58 +4,121 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-	strict: process.env.NODE_ENV !== 'production',
-	//strict: false,
-
+	strict: process.env.NODE_ENV !== 'production', // ture : 성능이슈,
 	state: {
 		todoList: [
-			/*{
-			date: Date,
-			do : String,
-			isEnd : Boolean
-			id: Number
-			} */
+			{
+				title: '달리기',
+				date: '2021-05-22 03:33:21',
+				isEnd: false,
+				id: 1
+			}
 		],
-		toDayDate: null,
-		time: null,
+		toDayDate: new Date(),
+		time: new Date(),
 		todoChkNum: null
 	},
 	mutations: {
 		addToDoItem(state, todoItem) {
 			state.todoList.push(todoItem);
-			localStorage.setItem(todoItem, todoItem);
+			let tmpData = JSON.stringify(state.todoList);
+			localStorage.setItem('todoList', tmpData);
 		},
-		deleteToDoItem(todoItem, index) {
-			localStorage.removeItem(todoItem);
-			this.todoList.splice(index, 1);
+		deleteToDoItem(state, todoItem) {
+			state.todoList.forEach(function (item, index) {
+				if (item.id === todoItem.id) {
+					state.todoList.splice(index, 1);
+				}
+				//localStorage.removeItem(todoItem);
+				let tmpData = JSON.stringify(state.todoList);
+				localStorage.setItem('todoList', tmpData);
+			})
 		},
-		clearToToList() {
+		clearToToList(state) {
 			localStorage.clear();
-			this.todoList = [];
+			state.todoList = [];
 		},
-		completedToDo(todoItem, index) {
-			this.todoList[index].isEnd = !this.todoList[index].isEnd;
+		completedToDo(state, todoItem) {
+			state.todoList.forEach(item => {
+				if (item.id === todoItem.id) {
+					item.isEnd = !item.isEnd;
+				}
+			})
+			let tmpData = JSON.stringify(state.todoList);
+			localStorage.setItem('todoList', tmpData);
+		},
+		initTodoList(state) {
+			if (localStorage.getItem('todoList')) {
+				state.todoList = JSON.parse(localStorage.getItem('todoList'));
+			}
+		},
+		sortTodoList(state) {
+			state.todoList.sort(function (a, b) {
+				return new Date(a.date) - new Date(b.date)
+			})
+			let tmpData = JSON.stringify(state.todoList);
+			localStorage.setItem('todoList', tmpData);
+		},
+		reverseTodoList(state) {
+			state.todoList.sort(function (a, b) {
+				return new Date(b.date) - new Date(a.date)
+			})
+			let tmpData = JSON.stringify(state.todoList);
+			localStorage.setItem('todoList', tmpData);
 		}
 	},
 	actions: {
-		addToDoItem(context, todoItem) {
-			context.commit('addToDoItem', todoItem);
+		completedToDo({commit}, todoItem) { // {commit}
+			commit('completedToDo', todoItem);
 		},
-
-		addNewTodo({ commit }, item) {
-			commit('addToDoItem', item)
+		deleteToDoItem({commit}, todoItem) {
+			commit('deleteToDoItem', todoItem);
+		},
+		addToDoItem({commit}, todoItem) {
+			if (todoItem.title === '' || todoItem.title === null) {
+				alert('할일을 입력해주세요');
+			} else {
+				todoItem.id = this.state.todoList[this.state.todoList.length - 1].id + 1;
+				let today = this.getters.toDayDate;
+				let time = this.getters.time;
+				todoItem.date = today + ' ' + time;
+				commit('addToDoItem', todoItem);
+			}
+		},
+		initTodoList({commit}) {
+			commit('initTodoList');
+		},
+		clearToToList({commit}) {
+			commit('clearToToList');
+		},
+		sortTodoList({ commit }) {
+			commit('sortTodoList');
+		},
+		reverseTodoList({ commit }) {
+			commit('reverseTodoList');
 		}
-
 	},
 	modules: {},
 	getters: {
-		toDayDate() {},
-		time() { },
+		toDayDate(state) {
+			let today = state.toDayDate;
+			today = today.getFullYear() + '-' +
+				(today.getMonth() + 1) + '-' +
+				today.getDate();
 
-		//리스트 추가
-		addTodoList(state) {
-			return state.todoList
+			return today;
+
+		},
+		time(state) {
+			let time = state.time;
+			time = time.getHours() + ':' +
+				time.getMinutes() + ':' +
+				time.getSeconds();
+				
+			return time;
 		}
-
 	},
+	methods: {
+
+	}
 })

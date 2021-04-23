@@ -1,14 +1,19 @@
 <template>
 	<div>
+        <ul v-if="listData.length > 0" class="list-wrap">
+            <todo-item 
+                v-for="(todo, i) in listData" :key="i"
+                :isChecked="isChecked"
+                :todoItem ="todo"
+                
+                @check="checkTodo"
+                @delete="toggleTodo"
 
-		<todo-item
-			v-for="(todo, i) in todoList" :key="i"
-			:isChecked="isChecked"
-			:todoItem ="todo"
-			
-			@check="checkTodo"
-			@delete="toggleTodo"
-		></todo-item>
+            ></todo-item>
+        </ul>
+        <div v-else class="no-data">
+           {{ noDataString }}
+        </div>
 
 
 	</div>
@@ -22,13 +27,16 @@ export default {
 		TodoItem
 	},
 	props:{
-		todoList: {
+		listData: {
 			type: Array,
 		},
 		isChecked: {
 			type: Boolean,
 			default: false,
 		},
+        noDataString: {
+            default: '게시글이 없습니다.'
+        }
 	},
 	methods: {
 		checkTodo(todo){
@@ -42,5 +50,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+	.no-data{
+		margin:30px;
+		min-height:300px;
+		padding:15px;
+		background:#fff;
+		border-radius: 12px;
+		text-align:center;
+		line-height:300px;
+	}
 </style>
