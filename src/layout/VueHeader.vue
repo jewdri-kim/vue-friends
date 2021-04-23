@@ -147,7 +147,7 @@ import { mapState } from "vuex";
 			}
 			.date-box{
 				position:absolute;
-				top:12%;
+				top:11%;
 				left:10%;
 				>div{
 					display:inline-block;
@@ -175,7 +175,7 @@ import { mapState } from "vuex";
 			}
 			.task-box{
 				position:absolute;
-				top:12%;
+				top:10%;
 				right:10%;
 				font-size:0;
 				span{
@@ -207,8 +207,8 @@ import { mapState } from "vuex";
 					right: 7%;
 					width: 40px;
 					height: 40px;
-					border: 1px solid #000;
-					//background:#ff8f00;
+					border: 1px solid #ff8f00;
+					background:#ff8f00;
 					line-height: 40px;
 					text-align: center;
 					border-radius: 100%;
@@ -218,13 +218,13 @@ import { mapState } from "vuex";
 						position:absolute;
 						top:50%;left:50%;
 						transform:translate(-50%, -50%);
-						background:#000
+						background:#ffeb3b;
 					}
 					&:before{
-						width:1px;height:18px;
+						width:2px;height:18px;
 					}
 					&:after{
-						width:18px;height:1px;
+						width:18px;height:2px;
 					}
 				}
 				.form{
@@ -255,29 +255,28 @@ import { mapState } from "vuex";
 						font-size: 0;
 						opacity: 0;
 						z-index: -1;
-							.i-arr{
-								&::before{
-									content:'';
-									position:absolute;top:50%;left:50%;
-									display:inline-block; 
-									width: 15px;height:1px;
-									background:#fff;
-									transform: translate(-50%,-50%);
-									}
-								&::after{
-									content:'';
-									position:absolute;top:50%;left:65%;
-									display:inline-block; 
-									width: 8px; height:8px;
-									border-style: solid;border-color: transparent #fff #fff transparent;border-width: 0 1px 1px 0;
-									-webkit-transform: rotate(-45deg);
-									-ms-transform: rotate(-45deg);
-									transform: translate(-50%,-50%) rotate(-45deg);
-									margin-left:-1px;
-									-webkit-transition: all .3s ease;-moz-transition: all .3s ease;transition: all .3s ease;
-									}
-
+						.i-arr{
+							&::before{
+								content:'';
+								position:absolute;top:50%;left:50%;
+								display:inline-block; 
+								width: 15px;height:1px;
+								background:#fff;
+								transform: translate(-50%,-50%);
 							}
+							&::after{
+								content:'';
+								position:absolute;top:50%;left:65%;
+								display:inline-block; 
+								width: 8px; height:8px;
+								border-style: solid;border-color: transparent #fff #fff transparent;border-width: 0 1px 1px 0;
+								-webkit-transform: rotate(-45deg);
+								-ms-transform: rotate(-45deg);
+								transform: translate(-50%,-50%) rotate(-45deg);
+								margin-left:-1px;
+								-webkit-transition: all .3s ease;-moz-transition: all .3s ease;transition: all .3s ease;
+							}
+						}
 					}
 				}
 				&.active{

@@ -39,8 +39,14 @@
 <style lang="scss" scoped>
 //스타일 수정
 .select {
-	width:85px;
-	padding: 0 35px 0 15px;
+	width:auto;
+	height:35px;
+	line-height:35px;
+	padding:0 15px 0 5px;
 	color: #222;
+	border:0;
+	border-bottom:1px solid #ddd;
+	background:transparent;
+	font-size:13px;
 }
 </style>

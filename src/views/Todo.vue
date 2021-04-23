@@ -4,8 +4,11 @@
 		<div class="todo-body">
 
 			<div class="filter-wrap">
-				<div class="filter">
-					<button @click="clearAll()" class="btn-all">Clear All</button>
+				<div class="filter all-area">
+					<button @click="clearAll()" class="btn-all">
+						<i class="i-chk"></i>
+						<span>전체 삭제</span>
+					</button>
 				</div>
 				<div class="filter select-area">
 					<select-field
@@ -115,12 +118,52 @@ export default {
 		transform:translateX(-50%);
 		.filter-wrap{
 			font-size:0;
-			padding:10px 15px;
+			padding:15px 30px 0;
 			.filter{
 				display:inline-block;
 				width:50%;
-				.btn-all{
-					font-size:14px;
+				&.all-area{
+					.btn-all{
+						background:transparent;
+						font-size:0;
+						.i-chk{
+							position:relative;
+							display:inline-block;
+							width:20px;height:20px;
+							border:1px solid #ddd;
+							background:#fff;
+							border-radius:100%;
+							vertical-align:middle;
+							&::before{
+								content: "";
+								position: absolute;
+								background: #ffbf0b;
+								border-radius:15px;
+								-webkit-transform: translate(-5px, 7px) rotate(45deg);
+								transform:translate(-5px, 7px) rotate(45deg);
+								-webkit-transform-origin: left;
+								transform-origin: left;
+								width: 6px;height: 2px;
+							}
+							&::after{
+								content: "";
+								position: absolute;
+								background: #ffbf0b;
+								border-radius:15px;
+								-webkit-transform:translate(-2px, 11px) rotate(-45deg);
+								transform:translate(-2px, 11px) rotate(-45deg);
+								-webkit-transform-origin: left;
+								transform-origin: left;
+								width: 9px;height: 2px;
+							}
+						}
+						span{
+							display:inline-block;
+							margin-left:7px;
+							font-size:13px;
+							vertical-align:middle;
+						}
+					}
 				}
 				&.select-area{
 					position:relative;
@@ -129,8 +172,8 @@ export default {
 						content: "";
 						z-index: 2;
 						position: absolute;
-						top: 17px;
-						right: 20px;
+						top: 12px;
+						right: 0px;
 						display: inline-block;
 						width: 7px;
 						height: 7px;
@@ -172,8 +215,5 @@ export default {
 			}
 		}
 	}
-}
-input {
-	background-color: #fff;
 }
 </style>
