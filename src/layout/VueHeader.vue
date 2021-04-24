@@ -130,6 +130,9 @@ import { mapState } from "vuex";
 			todoListCompleted() {
 				return this.$store.getters.getTodoListCompleted
 			},
+            //todoChkNum() {
+                //return this.$store.state.todoList.filter(item => item.isEnd).length
+            //} 
 		},
 	}
 </script>
@@ -175,7 +178,7 @@ import { mapState } from "vuex";
 			}
 			.task-box{
 				position:absolute;
-				top:10%;
+				top:11%;
 				right:10%;
 				font-size:0;
 				span{

@@ -2,11 +2,13 @@
 		<li
 			class="list"
 			:class="{ checked: todoItem.isEnd }">
-			<button @click="$emit('check', todoItem)" class="btn-chk">DO</button>
-			<p class="label">{{ todoItem.title }}</p>
-			<div>
-				<button @click="$emit('delete', todoItem)">X</button>
-				<p>{{ todoItem.date | moment("D. ddd") }}</p>
+			<button @click="$emit('check', todoItem)" class="btn-chk">체크</button>
+			<div class="content">
+				<p class="label">{{ todoItem.title }}</p>
+				<p class="date">{{ todoItem.date | moment("MM.D. ddd") }}</p>
+			</div>
+			<div class="side">
+				<button @click="$emit('delete', todoItem)" class="btn-del">삭제</button>
 			</div>
 		</li>
 </template>
@@ -28,38 +30,100 @@ export default {
 
 <style lang="scss" scoped>
 .list {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+	position:relative;
 	background: #fff;
-	padding: 10px;
-	margin:0 15px;
+	padding: 15px 15px;
+	width:100%;
 
 	& + .list {
 		margin-top:10px;
 	}
 
-	> p {
+	.content {
+		display:inline-block;
 		word-break: break-all;
-		max-width: 55%;
+		padding:0 10px 0 20px;
+		vertical-align:middle;
+		p{
+			font-size:14px;
+			&.date{
+				margin-top:8px;
+				font-size:11px;
+				color:#777;
+			}
+		}
+	}
+	.side{
+		position:absolute;top:50%;right:30px;
+		transform: translateY(-50%);
 	}
 
-	> div p {
-		color: #ccc;
-		font-size: 12px;
-		font-weight: 300;
-		padding-top: 10px;
+	.btn-chk {
+		position:relative;
+		display:inline-block;
+		color: #ddd;
+		background:#fff;
+		border:1px solid #ddd;
+		width:25px;
+		height:25px;
+		border-radius:100%;
+		font-size:0;
+		vertical-align:middle;
+		&::before{
+			content: "";
+			position: absolute;
+			background: #ffbf0b;
+			border-radius:15px;
+			transform:translate(-6px, -2px) rotate(45deg);
+			transform-origin: left;
+			width: 7px;height: 2px;
+		}
+		&::after{
+			content: "";
+			position: absolute;
+			background: #ffbf0b;
+			border-radius: 15px;
+			transform: translate(-2px, 3px) rotate(-45deg);
+			transform-origin: left;
+			width: 13px;
+			height: 2px;
+		}
+	}
+	.btn-del{
+		font-size:0;
+		&:before, &:after{
+			content: '';
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			width: 15px;
+			height: 1px;
+			background-color: #000;
+		}
+		&:before{
+			-webkit-transform: translate(-50%, -50%) rotate(45deg);
+			transform: translate(-50%, -50%) rotate(45deg);
+		}
+		&:after{
+			-webkit-transform: translate(-50%, -50%) rotate(135deg);
+			transform: translate(-50%, -50%) rotate(135deg);
+		}
 	}
 }
 
 .checked {
-	.label {
-		text-decoration: line-through;
-		color: #ddd;
+	.content{
+		p{
+			color:#aaa !important
+		}
 	}
 
 	.btn-chk {
-		color: #ddd;
+		background:#ffbf0b;
+		border:1px solid #ffbf0b;
+		&:before, &:after{
+			background:#fff;
+		}
 	}
 }
 </style>

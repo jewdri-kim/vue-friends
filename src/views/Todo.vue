@@ -134,6 +134,7 @@ export default {
 							background:#fff;
 							border-radius:100%;
 							vertical-align:middle;
+							/*
 							&::before{
 								content: "";
 								position: absolute;
@@ -156,6 +157,7 @@ export default {
 								transform-origin: left;
 								width: 9px;height: 2px;
 							}
+							*/
 						}
 						span{
 							display:inline-block;

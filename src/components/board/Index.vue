@@ -50,8 +50,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+	.list-wrap{
+		margin:0 15px;
+	}
 	.no-data{
-		margin:30px;
+		margin:0 15px;
 		min-height:300px;
 		padding:15px;
 		background:#fff;
