@@ -1,7 +1,16 @@
 <template>
     <div class="todo-header">
 		<div class="time-box">
-			{{ time }} {{ timeText }}
+			{{ time }} <!--{{ timeText }}-->
+			<span v-if="type === 'morning'">
+				<img src="@/assets/img/ico-morning.png" class="ico-time"/>
+			</span>
+			<span v-else-if="type === 'afternoon'">
+				<img src="@/assets/img/ico-afternoon.png" class="ico-time"/>
+			</span>
+			<span v-else-if="type === 'night'">
+				<img src="@/assets/img/ico-night.png" class="ico-time"/>
+			</span>
 		</div>
 		<div class="date-box">
 			<div>
@@ -25,7 +34,7 @@
 							v-model="addTodo.title"
 							type="text"
 							id="todo"
-							placeholder="오늘 할 일!"
+							placeholder="Add New Task!"
 							@add="addNewTodo"
 						/>
 					</div>
@@ -37,16 +46,12 @@
 			</form>
 		</div>
         <popup :visible="popVisible" @PopUpclose="popVisible = false">
-            <h2 slot="header"> 할 일을 입력해주세요 !!!</h2>
-            <div class="contents">
-                <a href="#" @click.prevent="popVisible = false">확인</a>
+            <h2 slot="text">할 일을 입력해주세요.</h2>
+            <div class="btn-wrap">
+                <a href="#" @click.prevent="popVisible = false" class="btn">확인</a>
             </div>
         </popup> 
     </div>
-
-    
-
-
 </template>
 
 <script>
@@ -68,14 +73,15 @@ import { mapState } from "vuex";
 				date: "",
 				time: "",
 				timeText: "",			
-                addTodo:{
-                    title:null,
-                    date: new Date(),
-                    isEnd : false
-                },
+				addTodo:{
+					title:null,
+					date: new Date(),
+					isEnd : false
+				},
 				isShow: false,
-                popVisible : false
-				
+				isActive: false,
+				popVisible : false,
+				type: 'morning'
 			}
 		},
 		methods: {
@@ -105,13 +111,13 @@ import { mapState } from "vuex";
 
 				// 시간 텍스트
 				const timeBox = today.getHours();
-
+				
 				if(timeBox < 12){
-					this.timeText = "Good morning";
+					this.type = 'morning'
 				} else if(timeBox < 18){
-					this.timeText = "Good afternoon"
+					this.type = 'afternoon'
 				} else{
-					this.timeText = "Good night"
+					this.type = 'night'
 				}
 			},
 			timeLeft: function(str) {
@@ -134,9 +140,6 @@ import { mapState } from "vuex";
                 }
                 // console.log(this.todoList)
             },
-			removeTodo: function() {
-				//하나씩 삭제
-			},
 		},
 		mounted () {
 			//this.dateInfo();
@@ -160,10 +163,13 @@ import { mapState } from "vuex";
 			background:#fff081;
 			.time-box{
 				position:absolute;
-				top:15px;
+				top:10px;
 				right:15px;
 				color:#ff8f00;
 				font-weight:700;
+				.ico-time{
+					width:40px;
+				}
 			}
 			.date-box{
 				position:absolute;
@@ -195,24 +201,24 @@ import { mapState } from "vuex";
 			}
 			.task-box{
 				position:absolute;
-				top:10%;
+				top:11%;
 				right:10%;
 				font-size:0;
 				span{
 					display:inline-block;
-					font-size:20px;
+					font-size:22px;
 					font-weight:800;
 					color:#333;
 				}
 				strong{
 					display:inline-block;
-					font-size:30px;
+					font-size:40px;
 					font-weight:800;
 					color:#ff8f00;
 					&:after{
 						content:'/';
 						color:#333;
-						font-size:20px;
+						font-size:22px;
 						padding:0 5px;
 						display:inline-block;
 					}
@@ -315,6 +321,29 @@ import { mapState } from "vuex";
 							transition-delay: 0.3s;
 						}
 					}
+				}
+			}
+		}
+	}
+	.popup-wrap{
+		h2{
+			font-size:14px;
+			font-weight:300;
+			line-height:20px;
+		}
+		.btn-wrap{
+			margin-top:25px;
+			.btn{
+				display:inline-block;
+				padding:15px 20px;
+				background:#fff081;
+				font-size:13px;
+				color:#222;
+				border-radius:30px;
+				min-width:70px;
+				&+.btn{
+					margin-left:15px;
+					background:#ddd
 				}
 			}
 		}
