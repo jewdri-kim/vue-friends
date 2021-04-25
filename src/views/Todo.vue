@@ -2,11 +2,10 @@
 	<section class="todo-wrap">
 		<Header />
 		<div class="todo-body">
-
 			<div class="filter-wrap">
 				<div class="filter all-area">
-					<button @click="clearAll()" class="btn-all">
-						<i class="i-chk"></i>
+					<button @click="popOpen()" class="btn-all" v-if="todoList.length > 0">
+						<img src="@/assets/img/ico-del.png" class="ico-del"/>
 						<span>전체 삭제</span>
 					</button>
 				</div>
@@ -20,15 +19,22 @@
 			</div>
 
 			<board-list
-				style="margin-top:15px"
+				class="todo-list"
 				:listData="todoList"
 				:isChecked="isChecked"
                 :noDataString="noDataString"
 				@check="checkTodo"
 				@delete="deleteTodo"
 			></board-list>
+		</div>
 
-			</div>
+        <popup :visible="popVisible" @PopUpclose="popVisible = false">
+            <h2 slot="text">전체 할 일 목록이 없어집니다. <br>정말로 삭제하시겠습니까?</h2>
+            <div class="btn-wrap">
+                <a href="#" @click.prevent="clearAll" class="btn">예</a>
+                <a href="#" @click.prevent="popVisible = false" class="btn v2">아니요</a>
+            </div>
+        </popup>
 			<Footer />
 	</section>
 </template>
@@ -37,8 +43,8 @@ import Header from "@/layout/VueHeader";
 import Footer from "@/layout/VueFooter";
 import BoardList from "@/components/board/Index.vue";
 import SelectField from '@/components/form/SelectField.vue';
+import Popup from '@/layout/VuePopUp.vue';
 import { mapState } from "vuex";
-
 export default {
 	name: "Todo",
 	components: {
@@ -46,6 +52,7 @@ export default {
 		Footer,
 		BoardList,
 		SelectField,
+		Popup
 	},
 	data() {
 		return {
@@ -72,9 +79,9 @@ export default {
 					value: "B",
 				}
 			],
+			popVisible: false
 		};
 	},
-
 	computed: {
         ...mapState(['todoList']),
 	},
@@ -87,8 +94,12 @@ export default {
 		checkTodo(todo) {
 			this.$store.dispatch('completedToDo', {...todo});
 		},
+		popOpen(){
+			this.popVisible = true;
+        },
 		//전부 삭제
 		clearAll(){
+            this.popVisible = false;
 			this.$store.dispatch('clearToToList');
 		},
 		//정렬
@@ -114,7 +125,7 @@ export default {
 		left:50%;
 		background:#f8f8f8;
 		width:90%;
-		height:60%;
+		height:60vh;
 		transform:translateX(-50%);
 		.filter-wrap{
 			font-size:0;
@@ -126,44 +137,18 @@ export default {
 					.btn-all{
 						background:transparent;
 						font-size:0;
-						.i-chk{
+						.ico-del{
 							position:relative;
 							display:inline-block;
-							width:20px;height:20px;
-							border:1px solid #ddd;
-							background:#fff;
-							border-radius:100%;
+							width:15px;height:15px;
 							vertical-align:middle;
-							/*
-							&::before{
-								content: "";
-								position: absolute;
-								background: #ffbf0b;
-								border-radius:15px;
-								-webkit-transform: translate(-5px, 7px) rotate(45deg);
-								transform:translate(-5px, 7px) rotate(45deg);
-								-webkit-transform-origin: left;
-								transform-origin: left;
-								width: 6px;height: 2px;
-							}
-							&::after{
-								content: "";
-								position: absolute;
-								background: #ffbf0b;
-								border-radius:15px;
-								-webkit-transform:translate(-2px, 11px) rotate(-45deg);
-								transform:translate(-2px, 11px) rotate(-45deg);
-								-webkit-transform-origin: left;
-								transform-origin: left;
-								width: 9px;height: 2px;
-							}
-							*/
 						}
 						span{
 							display:inline-block;
 							margin-left:7px;
 							font-size:13px;
 							vertical-align:middle;
+							line-height:20px;
 						}
 					}
 				}
@@ -174,7 +159,7 @@ export default {
 						content: "";
 						z-index: 2;
 						position: absolute;
-						top: 12px;
+						top: 7px;
 						right: 0px;
 						display: inline-block;
 						width: 7px;
@@ -192,29 +177,8 @@ export default {
 			}
 		}
 		.todo-list{
-			height:100%;
-			overflow-y:scroll;
-		}
-		ul{
-			padding:20px;
-			li{
-				position:relative;
-				padding:15px 10px;
-				background:#fff;
-				&+li{
-					margin-top:20px;
-				}
-				.del-btn{
-					position:absolute;
-					top:50%;
-					right:10px;
-					transform:translateY(-50%);
-					background:transparent;
-				}
-				p{
-
-				}
-			}
+			height:85%;
+			margin-top:15px;
 		}
 	}
 }

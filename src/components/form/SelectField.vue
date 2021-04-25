@@ -37,16 +37,16 @@
 	}
 </script>
 <style lang="scss" scoped>
-//스타일 수정
 .select {
 	width:auto;
-	height:35px;
-	line-height:35px;
+	height:20px;
+	line-height:20px;
 	padding:0 15px 0 5px;
 	color: #222;
 	border:0;
-	border-bottom:1px solid #ddd;
+	//border-bottom:1px solid #ddd;
 	background:transparent;
 	font-size:13px;
+	margin-top:3px;
 }
 </style>

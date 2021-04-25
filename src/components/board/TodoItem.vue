@@ -2,11 +2,15 @@
 		<li
 			class="list"
 			:class="{ checked: todoItem.isEnd }">
-			<button @click="$emit('check', todoItem)" class="btn-chk">체크</button>
-			<div class="content">
-				<p class="label">{{ todoItem.title }}</p>
-				<p class="date">{{ todoItem.date | moment("MM.D. ddd") }}</p>
-			</div>
+			<button @click="$emit('check', todoItem)">
+				<span class="btn-chk">
+					체크
+				</span>
+				<div class="content">
+					<p class="label">{{ todoItem.title }}</p>
+					<p class="date">{{ todoItem.date | moment("MM.D. ddd") }}</p>
+				</div>
+			</button>
 			<div class="side">
 				<button @click="$emit('delete', todoItem)" class="btn-del">삭제</button>
 			</div>
@@ -38,12 +42,17 @@ export default {
 	& + .list {
 		margin-top:10px;
 	}
-
+	>button{
+		background:transparent;
+		width:87%;
+		text-align:left;
+	}
 	.content {
 		display:inline-block;
 		word-break: break-all;
 		padding:0 10px 0 20px;
 		vertical-align:middle;
+		text-align:left;
 		p{
 			font-size:14px;
 			&.date{
@@ -57,7 +66,6 @@ export default {
 		position:absolute;top:50%;right:30px;
 		transform: translateY(-50%);
 	}
-
 	.btn-chk {
 		position:relative;
 		display:inline-block;
@@ -69,24 +77,22 @@ export default {
 		border-radius:100%;
 		font-size:0;
 		vertical-align:middle;
-		&::before{
+		&:before, &:after{
 			content: "";
 			position: absolute;
-			background: #ffbf0b;
+			background: #ddd;
 			border-radius:15px;
-			transform:translate(-6px, -2px) rotate(45deg);
+			transition:all 0.3s ease-in;
+		}
+		&::before{
+			transform:translate(5px, 10px) rotate(45deg);
 			transform-origin: left;
 			width: 7px;height: 2px;
 		}
 		&::after{
-			content: "";
-			position: absolute;
-			background: #ffbf0b;
-			border-radius: 15px;
-			transform: translate(-2px, 3px) rotate(-45deg);
+			transform: translate(9px, 15px) rotate(-45deg);
 			transform-origin: left;
-			width: 13px;
-			height: 2px;
+			width: 13px;height: 2px;
 		}
 	}
 	.btn-del{
@@ -109,20 +115,18 @@ export default {
 			transform: translate(-50%, -50%) rotate(135deg);
 		}
 	}
-}
-
-.checked {
-	.content{
-		p{
-			color:#aaa !important
+	&.checked {
+		.content{
+			p{
+				color:#aaa !important
+			}
 		}
-	}
-
-	.btn-chk {
-		background:#ffbf0b;
-		border:1px solid #ffbf0b;
-		&:before, &:after{
-			background:#fff;
+		.btn-chk {
+			background:#ffbf0b;
+			border:1px solid #ffbf0b;
+			&:before, &:after{
+				background:#fff;
+			}
 		}
 	}
 }

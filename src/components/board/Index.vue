@@ -11,8 +11,11 @@
 
             ></todo-item>
         </ul>
-        <div v-else class="no-data">
-           {{ noDataString }}
+        <div v-else class="nodata-wrap">
+			<div class="nodata">
+				<img src="@/assets/img/ico-nodata.png" class="ico-nodata"/>
+				<p>{{ noDataString }}</p>
+			</div>
         </div>
 
 
@@ -52,14 +55,26 @@ export default {
 <style lang="scss" scoped>
 	.list-wrap{
 		margin:0 15px;
+		height:100%;
+		overflow-y:scroll;
 	}
-	.no-data{
+	.nodata-wrap{
+		position:relative;
+		height:100%;
 		margin:0 15px;
-		min-height:300px;
-		padding:15px;
 		background:#fff;
 		border-radius: 12px;
 		text-align:center;
-		line-height:300px;
+		.nodata{
+			position:absolute;
+			top:50%;
+			width:100%;
+			text-align:center;
+			transform: translateY(-50%);
+		}
+		.ico-nodata{
+			width:50px;
+			margin-bottom:10px;
+		}
 	}
 </style>
