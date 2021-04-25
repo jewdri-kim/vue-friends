@@ -77,8 +77,12 @@ export default new Vuex.Store({
 		deleteToDoItem({commit}, todoItem) {
 			commit('deleteToDoItem', todoItem);
 		},
-		addToDoItem({commit}, todoItem) {			
-            todoItem.id = this.state.todoList[this.state.todoList.length - 1].id + 1;
+		addToDoItem({commit}, todoItem) {	
+            if(this.state.todoList.length > 0){	
+                todoItem.id = this.state.todoList[this.state.todoList.length - 1].id + 1;
+            }else{
+                todoItem.id = 1;
+            }
             commit('updateDateTime');
             let today = this.getters.toDayDate;
             let time = this.getters.time;
