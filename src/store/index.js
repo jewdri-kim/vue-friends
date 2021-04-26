@@ -112,8 +112,9 @@ export default new Vuex.Store({
 	getters: {
 		toDayDate(state) {
 			let today = state.toDayDate;
+            let month = today.getMonth() + 1;
 			today = today.getFullYear() + '-' +
-				(today.getMonth() + 1) + '-' +
+				( month  < 10 ?  ('0'+month) : month) + '-' +
 				today.getDate();
 
 			return today;
