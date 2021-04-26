@@ -113,10 +113,9 @@ export default new Vuex.Store({
 		toDayDate(state) {
 			let today = state.toDayDate;
             let month = today.getMonth() + 1;
+            month = month  < 10 ?  ('0' + month) : month;
 			today = today.getFullYear() + '-' +
-				( month  < 10 ?  ('0'+month) : month) + '-' +
-				today.getDate();
-
+                    month + '-' +  today.getDate();
 			return today;
 
 		},
