@@ -109,13 +109,13 @@ export default new Vuex.Store({
         }
 	},
 	modules: {},
-	getters: {
+	getters: { 
 		toDayDate(state) {
 			let today = state.toDayDate;
+            let month = today.getMonth() + 1;
+            month = month  < 10 ?  ('0' + month) : month;
 			today = today.getFullYear() + '-' +
-				(today.getMonth() + 1) + '-' +
-				today.getDate();
-
+                    month + '-' +  today.getDate();
 			return today;
 
 		},
