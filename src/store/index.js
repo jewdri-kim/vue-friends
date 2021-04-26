@@ -109,7 +109,7 @@ export default new Vuex.Store({
         }
 	},
 	modules: {},
-	getters: {
+	getters: { 
 		toDayDate(state) {
 			let today = state.toDayDate;
             let month = today.getMonth() + 1;
