@@ -9,7 +9,7 @@ export default new Vuex.Store({
 		todoList: [
 			{
 				title: '달리기',
-				date: '2021-05-22 03:33:21',
+				date: '2021-01-01 03:33:21',
 				isEnd: false,
 				id: 1
 			}
