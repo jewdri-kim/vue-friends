@@ -105,9 +105,9 @@ export default {
 		//정렬
 		listChange(){
 			if( this.selected === 'A'){
-				this.$store.dispatch('sortTodoList');
-			} else {
 				this.$store.dispatch('reverseTodoList');
+			} else {
+				this.$store.dispatch('sortTodoList');
 			}
 		}
 	},
