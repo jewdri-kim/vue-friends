@@ -7,8 +7,8 @@
 					체크
 				</span>
 				<div class="content">
-					<p class="label">{{ todoItem.title }}</p>
-					<p class="date">{{ todoItem.date | moment("MM.D. ddd") }}</p>
+					<p class="label">{{ todoItem.text }}</p>
+					<p class="date">{{ todoItem.created_at | moment("MM.D. ddd") }}</p>
 				</div>
 			</button>
 			<div class="side">
