@@ -5,7 +5,7 @@ const DEFAULT_HEADERS = {
 	'Access-Controll-Allow-Origin': '*'
 }
 
-const BASE_URL = ''
+const BASE_URL = 'http://api.stickinteractive.com'
 
 
 function responseInterceptors(axiosInst) {
