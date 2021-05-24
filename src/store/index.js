@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import {axiosDefault} from '@/store/api/BaseAxios'
 
 Vue.use(Vuex)
 
@@ -89,8 +90,20 @@ export default new Vuex.Store({
             todoItem.date = today + ' ' + time;
             commit('addToDoItem', todoItem);
 		},
+		/*
 		initTodoList({commit}) {
 			commit('initTodoList');
+		},
+		*/
+		async initTodoList({commit}, userId) {
+			await axiosDefault()
+                .get("/api/v1/todos/" + userId)
+                .catch((error) => {
+                    console.log("error : " + error)
+                })
+                .then((response) => {
+					commit('initTodoList', response.data);
+                })
 		},
 		clearToToList({commit}) {
 			commit('clearToToList');
