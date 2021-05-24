@@ -27,16 +27,7 @@ const router = new VueRouter({
 	base: process.env.BASE_URL,
 	routes
 })
-router.beforeEach((to, from, next) => {
-    store.commit('startLoading');
-    setTimeout(() => {
-        next();
-    }, 1);
-});
 
-router.afterEach(() => {
-    store.commit('endLoading');
-});
 
 export default router
 

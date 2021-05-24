@@ -126,7 +126,13 @@ export default new Vuex.Store({
         },
         updateTodoChkNum({ commit }){
 			commit('updateTodoChkNum');
-        }
+        },
+		startLoading({ commit }){
+			commit('startLoading');
+		},
+		endLoading({ commit }){
+			commit('endLoading');
+		}
 	},
 	modules: {},
 	getters: { 
