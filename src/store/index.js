@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import {axiosDefault} from '@/store/api/BaseAxios'
 
 Vue.use(Vuex)
 
@@ -9,7 +10,7 @@ export default new Vuex.Store({
 		todoList: [
 			{
 				title: '달리기',
-				date: '2021-05-22 03:33:21',
+				date: '2021-01-01 03:33:21',
 				isEnd: false,
 				id: 1
 			}
@@ -77,8 +78,12 @@ export default new Vuex.Store({
 		deleteToDoItem({commit}, todoItem) {
 			commit('deleteToDoItem', todoItem);
 		},
-		addToDoItem({commit}, todoItem) {			
-            todoItem.id = this.state.todoList[this.state.todoList.length - 1].id + 1;
+		addToDoItem({commit}, todoItem) {	
+            if(this.state.todoList.length > 0){	
+                todoItem.id = this.state.todoList[this.state.todoList.length - 1].id + 1;
+            }else{
+                todoItem.id = 1;
+            }
             commit('updateDateTime');
             let today = this.getters.toDayDate;
             let time = this.getters.time;
@@ -105,13 +110,13 @@ export default new Vuex.Store({
         }
 	},
 	modules: {},
-	getters: {
+	getters: { 
 		toDayDate(state) {
 			let today = state.toDayDate;
+            let month = today.getMonth() + 1;
+            month = month  < 10 ?  ('0' + month) : month;
 			today = today.getFullYear() + '-' +
-				(today.getMonth() + 1) + '-' +
-				today.getDate();
-
+                    month + '-' +  today.getDate();
 			return today;
 
 		},
