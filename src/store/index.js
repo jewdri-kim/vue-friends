@@ -95,9 +95,9 @@ export default new Vuex.Store({
 			commit('initTodoList');
 		},
 		*/
-		async initTodoList({commit}, todoId) {
+		async initTodoList({commit}, userId) {
 			await axiosDefault()
-                .get("/api/v1/todos/" + todoId)
+                .get("/api/v1/todos/" + userId)
                 .catch((error) => {
                     console.log("error : " + error)
                 })
