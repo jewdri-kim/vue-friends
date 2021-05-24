@@ -7,6 +7,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
 	strict: process.env.NODE_ENV !== 'production', // ture : 성능이슈,
 	state: {
+		loading: false,
 		todoList: [
 			{
 				title: '달리기',
@@ -70,6 +71,12 @@ export default new Vuex.Store({
             state.toDayDate = new Date();
             state.time = new Date();
         },
+		startLoading(state){
+			state.loading = true;
+		},
+		endLoading(state){
+			state.loading = false;
+		}
 	},
 	actions: {
 		completedToDo({commit}, todoItem) { // {commit}

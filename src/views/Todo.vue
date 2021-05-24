@@ -2,6 +2,7 @@
 	<section class="todo-wrap">
 		<Header />
 		<div class="todo-body">
+			
 			<div class="filter-wrap">
 				<div class="filter all-area">
 					<button @click="popOpen()" class="btn-all" v-if="todoList.length > 0">
@@ -35,7 +36,10 @@
                 <a href="#" @click.prevent="popVisible = false" class="btn v2">아니요</a>
             </div>
         </popup>
-			<Footer />
+
+		<spinner :visible='loading'/>
+
+		<Footer />
 	</section>
 </template>
 <script>
@@ -44,6 +48,9 @@ import Footer from "@/layout/VueFooter";
 import BoardList from "@/components/board/Index.vue";
 import SelectField from '@/components/form/SelectField.vue';
 import Popup from '@/layout/VuePopUp.vue';
+import Spinner from '@/components/VueLoading.vue';
+
+
 import { mapState } from "vuex";
 export default {
 	name: "Todo",
@@ -52,7 +59,8 @@ export default {
 		Footer,
 		BoardList,
 		SelectField,
-		Popup
+		Popup,
+		Spinner
 	},
 	data() {
 		return {
@@ -79,11 +87,12 @@ export default {
 					value: "B",
 				}
 			],
-			popVisible: false
+			popVisible: false,
+			loading: this.$store.state.loading
 		};
 	},
 	computed: {
-        ...mapState(['todoList']),
+        ...mapState(['todoList'])
 	},
 	methods: {
 		//삭제 버튼 클릭 시 상태값 변경
