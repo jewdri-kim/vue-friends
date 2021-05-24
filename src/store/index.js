@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import {axiosDefault} from '@/store/api/BaseAxios'
 
 Vue.use(Vuex)
 
@@ -9,14 +10,13 @@ export default new Vuex.Store({
 		todoList: [
 			{
 				title: '달리기',
-				date: '2021-05-22 03:33:21',
+				date: '2021-01-01 03:33:21',
 				isEnd: false,
 				id: 1
 			}
 		],
 		toDayDate: new Date(),
-		time: new Date(),
-		todoChkNum: null
+		time: new Date()
 	},
 	mutations: {
 		addToDoItem(state, todoItem) {
@@ -65,7 +65,11 @@ export default new Vuex.Store({
 			})
 			let tmpData = JSON.stringify(state.todoList);
 			localStorage.setItem('todoList', tmpData);
-		}
+		},
+        updateDateTime(state){
+            state.toDayDate = new Date();
+            state.time = new Date();
+        },
 	},
 	actions: {
 		completedToDo({commit}, todoItem) { // {commit}
@@ -74,19 +78,32 @@ export default new Vuex.Store({
 		deleteToDoItem({commit}, todoItem) {
 			commit('deleteToDoItem', todoItem);
 		},
-		addToDoItem({commit}, todoItem) {
-			if (todoItem.title === '' || todoItem.title === null) {
-				alert('할일을 입력해주세요');
-			} else {
-				todoItem.id = this.state.todoList[this.state.todoList.length - 1].id + 1;
-				let today = this.getters.toDayDate;
-				let time = this.getters.time;
-				todoItem.date = today + ' ' + time;
-				commit('addToDoItem', todoItem);
-			}
+		addToDoItem({commit}, todoItem) {	
+            if(this.state.todoList.length > 0){	
+                todoItem.id = this.state.todoList[this.state.todoList.length - 1].id + 1;
+            }else{
+                todoItem.id = 1;
+            }
+            commit('updateDateTime');
+            let today = this.getters.toDayDate;
+            let time = this.getters.time;
+            todoItem.date = today + ' ' + time;
+            commit('addToDoItem', todoItem);
 		},
+		/*
 		initTodoList({commit}) {
 			commit('initTodoList');
+		},
+		*/
+		async initTodoList({commit}, userId) {
+			await axiosDefault()
+                .get("/api/v1/todos/" + userId)
+                .catch((error) => {
+                    console.log("error : " + error)
+                })
+                .then((response) => {
+					commit('initTodoList', response.data);
+                })
 		},
 		clearToToList({commit}) {
 			commit('clearToToList');
@@ -96,16 +113,22 @@ export default new Vuex.Store({
 		},
 		reverseTodoList({ commit }) {
 			commit('reverseTodoList');
-		}
+		},
+        updateDateTime({ commit }){
+			commit('updateDateTime');
+        },
+        updateTodoChkNum({ commit }){
+			commit('updateTodoChkNum');
+        }
 	},
 	modules: {},
-	getters: {
+	getters: { 
 		toDayDate(state) {
 			let today = state.toDayDate;
+            let month = today.getMonth() + 1;
+            month = month  < 10 ?  ('0' + month) : month;
 			today = today.getFullYear() + '-' +
-				(today.getMonth() + 1) + '-' +
-				today.getDate();
-
+                    month + '-' +  today.getDate();
 			return today;
 
 		},
