@@ -2,10 +2,11 @@
 	<div>
         <ul v-if="listData.length > 0" class="list-wrap">
             <todo-item 
-                v-for="(todo, i) in listData" :key="i"
-                :isChecked="isChecked"
+                v-for="(todo, index) in listData" :key="index"
+                :checked="checked"
                 :todoItem ="todo"
-                
+                :itemIdx = "index"
+				
                 @check="checkTodo"
                 @delete="toggleTodo"
 
@@ -33,9 +34,8 @@ export default {
 		listData: {
 			type: Array,
 		},
-		isChecked: {
-			type: Boolean,
-			default: false,
+		checked: {
+			type: Number,
 		},
         noDataString: {
             default: '게시글이 없습니다.'

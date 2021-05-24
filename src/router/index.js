@@ -11,6 +11,7 @@ const routes = [{
 		component: Todo,
 		beforeEnter: (to, from, next) => {
 			try {
+				store.dispatch('getUserId');
 				store.dispatch('initTodoList');
 			} catch(e) {
 				console.error('initialize failed.', e.message);

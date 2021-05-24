@@ -1,8 +1,8 @@
 <template>
 		<li
 			class="list"
-			:class="{ checked: todoItem.isEnd }">
-			<button @click="$emit('check', todoItem)">
+			:class="{ checked: todoItem.state == 2 }">
+			<button @click="toggleCheck(todoItem.state)">
 				<span class="btn-chk">
 					체크
 				</span>
@@ -12,7 +12,8 @@
 				</div>
 			</button>
 			<div class="side">
-				<button @click="$emit('delete', todoItem)" class="btn-del">삭제</button>
+				<!-- <button @click="$emit('delete', todoItem)" class="btn-del">삭제</button> -->
+				<button @click="deleteTodo" class="btn-del">삭제</button>
 			</div>
 		</li>
 </template>
@@ -24,11 +25,37 @@ export default {
 		todoItem: {
 			type: Object,
 		},
-		isChecked: {
-			type: Boolean,
-			default: false,
+		checked: {
+			type: Number,
 		},
+		itemIdx: {
+			type: Number
+		}
 	},
+	methods: {
+		toggleCheck(state){
+			if( state === 2 ){
+				this.$store.dispatch('completedToDo', { 
+					idx: this.itemIdx,
+					item: this.todoItem, 
+					state: 1 
+				})
+
+			} else { 
+				this.$store.dispatch('completedToDo', { 
+					idx: this.itemIdx,
+					item: this.todoItem, 
+					state: 2 
+				})
+			}
+		},
+		deleteTodo(){
+			this.$store.dispatch('deleteToDoItem', { 
+				idx: this.itemIdx,
+				item: this.todoItem,  
+			})
+		}
+	}
 };
 </script>
 
