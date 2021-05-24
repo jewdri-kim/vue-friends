@@ -90,8 +90,20 @@ export default new Vuex.Store({
             todoItem.date = today + ' ' + time;
             commit('addToDoItem', todoItem);
 		},
+		/*
 		initTodoList({commit}) {
 			commit('initTodoList');
+		},
+		*/
+		async initTodoList({commit}, todoId) {
+			await axiosDefault()
+                .get("/api/v1/todos/" + todoId)
+                .catch((error) => {
+                    console.log("error : " + error)
+                })
+                .then((response) => {
+					commit('initTodoList', response.data);
+                })
 		},
 		clearToToList({commit}) {
 			commit('clearToToList');
