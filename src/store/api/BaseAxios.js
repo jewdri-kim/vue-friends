@@ -1,45 +1,34 @@
-import axios from 'axios';
+import axios from 'axios'
 
-const DEFAULT_HEADERS = {
-	'Content-Type': 'application/json',
-	'Access-Controll-Allow-Origin': '*'
-}
+//axios 인스턴스 생성
+const instance = axios.create({
+	baseURL: 'http://api.stickinteractive.com',
+	timeout: 3000,
+	headers: {
+		'Content-Type': 'application/json',
+		'Access-Controll-Allow-Origin': '*'
+	}
+})
 
-const BASE_URL = 'http://api.stickinteractive.com'
+//1.요청 인터셉터
+instance.interceptors.request.use(
+	(config) => {
+		return config
+	},
 
+	(err) => {
+		return Promise.reject(err)
+	}
+)
 
-function responseInterceptors(axiosInst) {
-    axiosInst.interceptors.response.use(
-        function (response) {
-            return response.data;
-        },
-        function (error) {
-            if (error.response.status === 403) {
-                // 인증 만료
-                return Promise.reject({
-                    code: 403,
-                    message: '인증 기간이 만료 되었습니다.',
-                    
-                });
-             } else if (error.response.status === 401) {
-                 // 인증 정보 불일치
-                return Promise.reject({
-                    code: 401,
-                    message: '인증 정보가 없습니다.'
-                });
-            }
-        }
-    )
+//2.응답 인터셉터
+instance.interceptors.response.use(
+	(config) => {
+		return config
+	},
+	(err) => {
+		return Promise.reject(err)
+	}
+)
 
-    return axiosInst
-}
-
-// 인증이 필요 없는 기본 통신 axios instance
-export function axiosDefault() {
-    return responseInterceptors(
-        axios.create({
-            baseURL: BASE_URL,
-            headers: DEFAULT_HEADERS,
-        })
-    )
-}
+export default instance

@@ -22,7 +22,7 @@
 			<board-list
 				class="todo-list"
 				:listData="todoList"
-				:isChecked="isChecked"
+				:checked="checked"
                 :noDataString="noDataString"
 				@check="checkTodo"
 				@delete="deleteTodo"
@@ -49,9 +49,8 @@ import BoardList from "@/components/board/Index.vue";
 import SelectField from '@/components/form/SelectField.vue';
 import Popup from '@/layout/VuePopUp.vue';
 import Spinner from '@/components/VueLoading.vue';
-
-
 import { mapState } from "vuex";
+
 export default {
 	name: "Todo",
 	components: {
@@ -64,13 +63,13 @@ export default {
 	},
 	data() {
 		return {
-			isChecked: false,
+			checked: 1,
 			todoInput: "",
-            addTodo:{
-                title:null,
-                date: new Date(),
-                isEnd : false
-            },
+            // addTodo:{
+            //     title:null,
+            //     date: new Date(),
+            //     isEnd : false
+            // },
             noDataString: '목록이 없습니다.',
 			selected: "",
 			options: [
