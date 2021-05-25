@@ -25,7 +25,9 @@ export default new Vuex.Store({
 	},
 	mutations: {
 		addToDoItem(state, todoItem) {
-			state.todoList = todoItem;
+			//console.log('mutations addToDoItem');
+			//console.log(todoItem);
+			state.todoList.push(todoItem);
 		},
 
 		deleteToDoItem(state , todoId) {
@@ -105,8 +107,8 @@ export default new Vuex.Store({
 
 		addToDoItem({state, commit}, todoItem) {
 			axios.post("/api/v1/todos/" + state.userId, todoItem)
-				.then(res => {
-					todoItem = res.data.data
+				.then(() => {
+					//console.log(res.data.data);
 					commit('addToDoItem', todoItem);
 				})
 				.catch(err => {
@@ -118,7 +120,6 @@ export default new Vuex.Store({
 			axios.get("/api/v1/todos/" + state.userId)
 				.then(res => {
 					let todoList = res.data.data
-					console.log(todoList)
 					commit('initTodoList', todoList);
 				})
 				.catch(err => {
@@ -139,8 +140,20 @@ export default new Vuex.Store({
 		// 		})
 		// },
 
-		clearToToList({commit}) {
+		clearToToList({commit}, state) {
+			console.log('clearToToList');
+			console.log(state.todoList);
+			for(let i ; i < state.todoList.length; i++){
+				console.log(state.todoList[i]);
+			}
 			commit('clearToToList');
+			
+			/*
+			axios.delete("/api/v1/todos/" + todoItemPayload.item.id)
+				.then(res => {
+					console.log(res)
+					commit('deleteToDoItem', todoItemPayload.idx);
+				})*/
 		},
 		sortTodoList({ commit }) {
 			commit('sortTodoList');
