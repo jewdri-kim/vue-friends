@@ -67,8 +67,6 @@ export default new Vuex.Store({
 			state.userId = setUserId
 		},
 		setLoading(state, isLoading){
-			console.log('mutation setLoading');
-			console.log(isLoading);
 			state.loading = isLoading;
 		}
 	},
@@ -78,8 +76,7 @@ export default new Vuex.Store({
 			axios.patch("/api/v1/todos/" + todoItemPayload.item.id, {
 				state: todoItemPayload.state,
 				text: todoItemPayload.item.text })
-				.then(res => {
-					console.log(res)
+				.then(() => {
 					commit('completedToDo', todoItemPayload);
 				})
 		},
@@ -87,8 +84,7 @@ export default new Vuex.Store({
 		deleteToDoItem({ commit }, todoItemPayload) {
 			//console.dir(todoItemPayload)
 			axios.delete("/api/v1/todos/" + todoItemPayload.item.id)
-				.then(res => {
-					console.log(res)
+				.then(() => {
 					commit('deleteToDoItem', todoItemPayload.idx);
 				})
 		},
@@ -145,10 +141,18 @@ export default new Vuex.Store({
 		// 		})
 		// },
 
-		clearToToList({commit}, state) {
+		clearToToList({state, commit}) {
 			console.log('clearToToList');
 			console.log(state.todoList);
 
+			
+
+			state.todoList.forEach((element)=>{
+				axios.delete("/api/v1/todos/" + element.id)
+				.then(res => {
+					console.log(res)
+				})
+			})
 			commit('clearToToList');
 			
 			/*
