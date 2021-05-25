@@ -3,7 +3,7 @@ import store from '@/store/'
 
 //axios 인스턴스 생성
 const instance = axios.create({
-	baseURL: 'http://api.stickinteractive.com',
+	baseURL: 'https://api.stickinteractive.com',
 	timeout: 3000,
 	headers: {
 		'Content-Type': 'application/json',
