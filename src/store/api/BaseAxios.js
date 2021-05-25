@@ -31,6 +31,7 @@ instance.interceptors.response.use(
 		return config
 	},
 	(err) => {
+		store.dispatch('setLoading', false);
 		return Promise.reject(err)
 	}
 )
