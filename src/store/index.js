@@ -35,9 +35,9 @@ export default new Vuex.Store({
 			state.todoList.splice(todoId, 1)
 
 		},
-		clearToToList() {
-			// localStorage.clear();
-			// state.todoList = [];
+		clearToToList(state) {
+			// ocalStorage.clear();
+			state.todoList = [];
 		},
 		completedToDo( state , todoItemPayload ) {
 			state.todoList[todoItemPayload.idx].state = todoItemPayload.state
@@ -65,6 +65,11 @@ export default new Vuex.Store({
 		},
 		getUserId(state , setUserId) {
 			state.userId = setUserId
+		},
+		setLoading(state, isLoading){
+			console.log('mutation setLoading');
+			console.log(isLoading);
+			state.loading = isLoading;
 		}
 	},
 	actions: {
@@ -143,9 +148,7 @@ export default new Vuex.Store({
 		clearToToList({commit}, state) {
 			console.log('clearToToList');
 			console.log(state.todoList);
-			for(let i ; i < state.todoList.length; i++){
-				console.log(state.todoList[i]);
-			}
+
 			commit('clearToToList');
 			
 			/*
@@ -166,7 +169,10 @@ export default new Vuex.Store({
         },
         updateTodoChkNum({ commit }){
 			commit('updateTodoChkNum');
-        }
+        },
+		setLoading( { commit }, isLoading){	
+			commit('setLoading', isLoading);
+		}
 	},
 	modules: {},
 	getters: { 

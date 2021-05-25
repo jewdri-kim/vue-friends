@@ -1,4 +1,5 @@
 import axios from 'axios'
+import store from '@/store/'
 
 //axios 인스턴스 생성
 const instance = axios.create({
@@ -13,10 +14,12 @@ const instance = axios.create({
 //1.요청 인터셉터
 instance.interceptors.request.use(
 	(config) => {
+		store.dispatch('setLoading', true);
 		return config
 	},
 
 	(err) => {
+		store.dispatch('setLoading', false);
 		return Promise.reject(err)
 	}
 )
@@ -24,6 +27,7 @@ instance.interceptors.request.use(
 //2.응답 인터셉터
 instance.interceptors.response.use(
 	(config) => {
+		store.dispatch('setLoading', false);
 		return config
 	},
 	(err) => {
