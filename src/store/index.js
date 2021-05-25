@@ -142,11 +142,6 @@ export default new Vuex.Store({
 		// },
 
 		clearToToList({state, commit}) {
-			console.log('clearToToList');
-			console.log(state.todoList);
-
-			
-
 			state.todoList.forEach((element)=>{
 				axios.delete("/api/v1/todos/" + element.id)
 				.then(res => {
@@ -154,13 +149,6 @@ export default new Vuex.Store({
 				})
 			})
 			commit('clearToToList');
-			
-			/*
-			axios.delete("/api/v1/todos/" + todoItemPayload.item.id)
-				.then(res => {
-					console.log(res)
-					commit('deleteToDoItem', todoItemPayload.idx);
-				})*/
 		},
 		sortTodoList({ commit }) {
 			commit('sortTodoList');
