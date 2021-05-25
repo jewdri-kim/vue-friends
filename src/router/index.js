@@ -11,6 +11,7 @@ const routes = [{
 		component: Todo,
 		beforeEnter: (to, from, next) => {
 			try {
+				store.dispatch('getUserId');
 				store.dispatch('initTodoList');
 			} catch(e) {
 				console.error('initialize failed.', e.message);
@@ -21,13 +22,11 @@ const routes = [{
 	}
 ]
 
-
 const router = new VueRouter({
 	mode: 'history',
 	base: process.env.BASE_URL,
 	routes
 })
-
 
 export default router
 

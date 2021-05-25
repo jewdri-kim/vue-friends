@@ -1,117 +1,144 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {axiosDefault} from '@/store/api/BaseAxios'
+import axios from './api/BaseAxios'
+//import {axiosDefault} from '@/store/api/BaseAxios'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
 	strict: process.env.NODE_ENV !== 'production', // ture : 성능이슈,
 	state: {
-		loading: false,
+		loading:false,
 		todoList: [
-			{
-				title: '달리기',
-				date: '2021-01-01 03:33:21',
-				isEnd: false,
-				id: 1
-			}
+			// {
+			// 	id: 1,
+			// 	text: '달리기',
+			// 	state: 1,
+			// 	created_at: '2021-01-01 03:33:21',
+			// 	updated_at: null
+			// }
 		],
+		
 		toDayDate: new Date(),
-		time: new Date()
+		time: new Date(),
+		userId: ''
 	},
 	mutations: {
 		addToDoItem(state, todoItem) {
-			state.todoList.push(todoItem);
-			let tmpData = JSON.stringify(state.todoList);
-			localStorage.setItem('todoList', tmpData);
+			state.todoList = todoItem;
 		},
-		deleteToDoItem(state, todoItem) {
-			state.todoList.forEach(function (item, index) {
-				if (item.id === todoItem.id) {
-					state.todoList.splice(index, 1);
-				}
-				//localStorage.removeItem(todoItem);
-				let tmpData = JSON.stringify(state.todoList);
-				localStorage.setItem('todoList', tmpData);
-			})
+
+		deleteToDoItem(state , todoId) {
+			//console.log(`todoId ${todoId}`)
+			state.todoList.splice(todoId, 1)
+
 		},
-		clearToToList(state) {
-			localStorage.clear();
-			state.todoList = [];
+		clearToToList() {
+			// localStorage.clear();
+			// state.todoList = [];
 		},
-		completedToDo(state, todoItem) {
-			state.todoList.forEach(item => {
-				if (item.id === todoItem.id) {
-					item.isEnd = !item.isEnd;
-				}
-			})
-			let tmpData = JSON.stringify(state.todoList);
-			localStorage.setItem('todoList', tmpData);
+		completedToDo( state , todoItemPayload ) {
+			state.todoList[todoItemPayload.idx].state = todoItemPayload.state
 		},
-		initTodoList(state) {
-			if (localStorage.getItem('todoList')) {
-				state.todoList = JSON.parse(localStorage.getItem('todoList'));
-			}
+		initTodoList(state, todoList) {
+			state.todoList = todoList
 		},
 		sortTodoList(state) {
 			state.todoList.sort(function (a, b) {
-				return new Date(a.date) - new Date(b.date)
+				return new Date(a.created_at) - new Date(b.created_at)
 			})
-			let tmpData = JSON.stringify(state.todoList);
-			localStorage.setItem('todoList', tmpData);
+			// let tmpData = JSON.stringify(state.todoList);
+			// localStorage.setItem('todoList', tmpData);
 		},
 		reverseTodoList(state) {
 			state.todoList.sort(function (a, b) {
-				return new Date(b.date) - new Date(a.date)
+				return new Date(b.created_at) - new Date(a.created_at)
 			})
-			let tmpData = JSON.stringify(state.todoList);
-			localStorage.setItem('todoList', tmpData);
+			// let tmpData = JSON.stringify(state.todoList);
+			// localStorage.setItem('todoList', tmpData);
 		},
         updateDateTime(state){
             state.toDayDate = new Date();
             state.time = new Date();
-        },
-		startLoading(state){
-			state.loading = true;
 		},
-		endLoading(state){
-			state.loading = false;
+		getUserId(state , setUserId) {
+			state.userId = setUserId
 		}
 	},
 	actions: {
-		completedToDo({commit}, todoItem) { // {commit}
-			commit('completedToDo', todoItem);
+		completedToDo({ commit }, todoItemPayload) { 
+			//console.log(todoItemPayload)
+			axios.patch("/api/v1/todos/" + todoItemPayload.item.id, {
+				state: todoItemPayload.state,
+				text: todoItemPayload.item.text })
+				.then(res => {
+					console.log(res)
+					commit('completedToDo', todoItemPayload);
+				})
 		},
-		deleteToDoItem({commit}, todoItem) {
-			commit('deleteToDoItem', todoItem);
+
+		deleteToDoItem({ commit }, todoItemPayload) {
+			//console.dir(todoItemPayload)
+			axios.delete("/api/v1/todos/" + todoItemPayload.item.id)
+				.then(res => {
+					console.log(res)
+					commit('deleteToDoItem', todoItemPayload.idx);
+				})
 		},
-		addToDoItem({commit}, todoItem) {	
-            if(this.state.todoList.length > 0){	
-                todoItem.id = this.state.todoList[this.state.todoList.length - 1].id + 1;
-            }else{
-                todoItem.id = 1;
-            }
-            commit('updateDateTime');
-            let today = this.getters.toDayDate;
-            let time = this.getters.time;
-            todoItem.date = today + ' ' + time;
-            commit('addToDoItem', todoItem);
+
+		getUserId({commit}) {
+			//로컬스토리지 확인
+			if (localStorage.getItem('localUserId')) {
+				let userId = localStorage.getItem('localUserId')
+				commit('getUserId', userId)
+			} else {
+				axios.post('/api/v1/user')
+					.then(res => {
+						let setUserId = res.data.data.user_id
+						//console.log(setUserId)
+						commit('getUserId', setUserId)
+
+						localStorage.setItem('localUserId', setUserId)
+					})
+			}
 		},
-		/*
-		initTodoList({commit}) {
-			commit('initTodoList');
+
+		addToDoItem({state, commit}, todoItem) {
+			axios.post("/api/v1/todos/" + state.userId, todoItem)
+				.then(res => {
+					todoItem = res.data.data
+					commit('addToDoItem', todoItem);
+				})
+				.catch(err => {
+					console.log(err)
+				})
 		},
-		*/
-		async initTodoList({commit}, userId) {
-			await axiosDefault()
-                .get("/api/v1/todos/" + userId)
-                .catch((error) => {
-                    console.log("error : " + error)
-                })
-                .then((response) => {
-					commit('initTodoList', response.data);
-                })
+
+		initTodoList({ state, commit }) {
+			axios.get("/api/v1/todos/" + state.userId)
+				.then(res => {
+					let todoList = res.data.data
+					console.log(todoList)
+					commit('initTodoList', todoList);
+				})
+				.catch(err => {
+					console.log(err)
+				})
 		},
+
+		// async initTodoList({state, commit}) {
+		// 	await axiosDefault()
+		// 		.get("/api/v1/todos/" + state.userId)
+		// 		.then(res => {
+		// 			let todoList = res.data.data
+		// 			console.log(todoList)
+		// 			commit('initTodoList', todoList);
+		// 		})
+		// 		.catch(err => {
+		// 			console.log(err)
+		// 		})
+		// },
+
 		clearToToList({commit}) {
 			commit('clearToToList');
 		},
@@ -126,13 +153,7 @@ export default new Vuex.Store({
         },
         updateTodoChkNum({ commit }){
 			commit('updateTodoChkNum');
-        },
-		startLoading({ commit }){
-			commit('startLoading');
-		},
-		endLoading({ commit }){
-			commit('endLoading');
-		}
+        }
 	},
 	modules: {},
 	getters: { 
@@ -152,7 +173,8 @@ export default new Vuex.Store({
 				time.getSeconds();
 				
 			return time;
-		}
+		},
+
 	},
 	methods: {
 

@@ -31,7 +31,7 @@
 				<div class="form">
 					<div class="form-group">
 						<input-field
-							v-model="addTodo.title"
+							v-model="addTodo.text"
 							type="text"
 							id="todo"
 							placeholder="Add New Task!"
@@ -74,9 +74,15 @@ import { mapState } from "vuex";
 				time: "",
 				timeText: "",			
 				addTodo:{
-					title:null,
-					date: new Date(),
-					isEnd : false
+					// title:null,
+					// date: new Date(),
+					// isEnd : false
+					id: null,
+					text: null,
+					isEnd: false,
+					state: 1,
+					created_at: new Date(),
+					updated_at: null,
 				},
 				isShow: false,
 				isActive: false,
@@ -131,14 +137,13 @@ import { mapState } from "vuex";
 			//todo 추가
              addNewTodo() {            
                 let item = this.addTodo;                
-                if (item.title === '' || item.title === null) {
-                    console.log('빈값');
+                if (item.text === '' || item.text === null) {
+                    //console.log('빈값');
                     this.popVisible = true;
                 }else{
                     this.$store.dispatch('addToDoItem', {...item});
-                    this.addTodo.title = '';
+                    this.addTodo.text = '';
                 }
-                // console.log(this.todoList)
             },
 		},
 		mounted () {
@@ -147,11 +152,12 @@ import { mapState } from "vuex";
 		},
 		computed: {
 			...mapState(['todoList']),
-			todoListCompleted() {
-				return this.$store.getters.getTodoListCompleted
-			},
+			// todoListCompleted() {
+			// 	return this.$store.getters.getTodoListCompleted
+			// },
             todoChkNum() {
-                return this.$store.state.todoList.filter(item => item.isEnd).length
+				console.log(this.$store.state.todoList)
+                return this.$store.state.todoList.filter(item => item.state == 2).length
             } 
 		},
 	}
